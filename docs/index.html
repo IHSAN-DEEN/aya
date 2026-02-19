@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book of Deeds • aya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --card-bg: rgba(22, 27, 34, 0.8);
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-gold: #d4af37;
+            --accent-green: #2ea043;
+            --accent-red: #da3633;
+            --font-cinematic: 'Cinzel', serif;
+            --font-body: 'Playfair Display', serif;
+            --font-mono: 'Fira Code', monospace;
+            --font-ui: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(46, 160, 67, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* Header */
+        header {
+            background: #161b22;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .repo-breadcrumb {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            color: var(--accent-gold);
+            font-family: var(--font-cinematic);
+        }
+
+        .repo-breadcrumb svg { margin-right: 0.5rem; }
+        .repo-breadcrumb span { margin: 0 0.5rem; color: var(--text-secondary); }
+        .repo-name { font-weight: 700; }
+        .badge-public {
+            border: 1px solid var(--border-color);
+            border-radius: 2rem;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: 1rem;
+            font-family: var(--font-ui);
+        }
+
+        /* Tabs */
+        .repo-tabs {
+            background: #161b22;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab-item {
+            padding: 1rem 0;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid transparent;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .tab-item:hover { opacity: 1; }
+        .tab-item.active {
+            border-bottom-color: var(--accent-gold);
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        .count-badge {
+            background: rgba(110, 118, 129, 0.4);
+            border-radius: 2rem;
+            padding: 0 0.4rem;
+            font-size: 0.75rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        /* File Explorer */
+        .file-explorer {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #0d1117;
+            overflow: hidden;
+        }
+
+        .commit-header {
+            background: #161b22;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .commit-info { display: flex; align-items: center; gap: 0.5rem; }
+        .avatar {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            display: flex; align-items: center; justify-content: center;
+            color: #000; font-weight: bold; font-size: 12px;
+        }
+        .commit-message { color: var(--text-primary); font-weight: 500; }
+        .commit-time { color: var(--text-secondary); font-size: 0.8rem; }
+        .commit-hash { font-family: var(--font-mono); color: var(--text-secondary); }
+
+        .file-list { list-style: none; }
+        .file-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: #161b22; }
+        
+        .file-icon { color: var(--text-secondary); }
+        .file-icon.folder { color: #54aeff; }
+        .file-name { color: var(--text-primary); text-decoration: none; }
+        .file-desc { color: var(--text-secondary); font-size: 0.9rem; }
+        .file-time { color: var(--text-secondary); font-size: 0.8rem; text-align: right; }
+
+        /* Readme Section */
+        .readme-container {
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        .readme-header {
+            padding: 0.5rem 1rem;
+            background: #161b22;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .readme-content {
+            padding: 2rem;
+            background: #0d1117;
+            font-family: var(--font-body);
+        }
+        .readme-content h1 {
+            font-family: var(--font-cinematic);
+            color: var(--accent-gold);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .readme-content p { margin-bottom: 1rem; color: var(--text-primary); }
+        .readme-content blockquote {
+            border-left: 4px solid var(--accent-gold);
+            padding-left: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Sidebar */
+        .sidebar h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .sidebar-section {
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .sidebar-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .lang-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            margin-top: 1rem;
+        }
+        .lang-segment { height: 100%; }
+        .lang-list { margin-top: 0.5rem; list-style: none; }
+        .lang-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* Contribution Graph */
+        .contribution-graph {
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            background: #0d1117;
+        }
+        .graph-grid {
+            display: grid;
+            grid-template-columns: repeat(53, 1fr);
+            gap: 3px;
+            margin-top: 0.5rem;
+        }
+        .graph-day {
+            width: 10px; height: 10px;
+            background: #161b22;
+            border-radius: 2px;
+        }
+        .level-0 { background: #161b22; }
+        .level-1 { background: #0e4429; }
+        .level-2 { background: #006d32; }
+        .level-3 { background: #26a641; }
+        .level-4 { background: #39d353; }
+
+        @media (max-width: 768px) {
+            main { grid-template-columns: 1fr; }
+            .file-desc { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+
+    <header>
+        <div class="repo-breadcrumb">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+            <a href="#" style="color: var(--accent-gold); text-decoration: none;">ServantOfAllah</a>
+            <span>/</span>
+            <span class="repo-name">book-of-deeds</span>
+            <span class="badge-public">Public</span>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+                ★ Star <span class="count-badge" id="star-count">0</span>
+            </button>
+            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+                ⑂ Fork <span class="count-badge" id="fork-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="repo-tabs">
+        <a href="#" class="tab-item active">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M4.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 2.75C3.5 2.06 4.06 1.5 4.75 1.5h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M4.75 9.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 9.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M9.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM8.5 2.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
+            Deeds (Code)
+        </a>
+        <a href="#" class="tab-item">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
+            Istighfar (Issues) <span class="count-badge">3</span>
+        </a>
+        <a href="#" class="tab-item">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
+            Duas (Pull Requests) <span class="count-badge">∞</span>
+        </a>
+        <a href="#" class="tab-item">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z"></path></svg>
+            Actions (Rituals)
+        </a>
+        <a href="#" class="tab-item">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM1.5 10h13v1.5h-13V10zm13-3h-13v1.5h13V7z"></path></svg>
+            Projects (Goals)
+        </a>
+        <a href="#" class="tab-item">
+            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h1a.5.5 0 00.5-.5V3a.5.5 0 00-.5-.5H2zM3 6H2v1h1V6zm0 3H2v1h1V9zm0 3H2v1h1v-1zm1.5-6h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5zm.5 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11zM16 12.5a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1z"></path></svg>
+            Wiki (Ilm)
+        </a>
+    </div>
+
+    <main>
+        <!-- Main Repo Content -->
+        <div class="content-col">
+            
+            <div class="file-explorer">
+                <div class="commit-header">
+                    <div class="commit-info">
+                        <div class="avatar">U</div>
+                        <span class="commit-message" id="latest-commit-msg">Loading latest deed...</span>
+                        <span class="commit-hash" id="latest-commit-hash">...</span>
+                    </div>
+                    <div class="commit-time" id="latest-commit-time">Just now</div>
+                </div>
+
+                <ul class="file-list" id="repo-file-list">
+                    <!-- JS will populate -->
+                    <li class="file-item" style="justify-content: center; color: var(--text-secondary);">
+                        Loading deeds...
+                    </li>
+                </ul>
+            </div>
+
+            <div class="readme-container">
+                <div class="readme-header">
+                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 0.5rem;"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 00-.5.5v11a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V4.5l-4-4H2zM3 4V3h4.5l.5.5v.5H3zM3 14V5h5v9H3z"></path></svg>
+                    README.md
+                </div>
+                <div class="readme-content">
+                    <h1>Book of Deeds</h1>
+                    <p>Welcome to the central repository of my life. This project is a continuous integration of faith, actions, and self-improvement.</p>
+                    
+                    <blockquote>
+                        "And We have fastened every man's deeds to his neck, and on the Day of Resurrection, We shall bring out for him a book which he will find wide open." (17:13)
+                    </blockquote>
+
+                    <h3>Mission Statement</h3>
+                    <p>To compile a bug-free record of good deeds, merge frequent pull requests (Duas), and deploy a successful soul to the Akhirah (Production Environment).</p>
+
+                    <h3>Core Dependencies</h3>
+                    <ul>
+                        <li><code>Quran v1.0.0</code> (Immutable Source of Truth)</li>
+                        <li><code>Sunnah.js</code> (Implementation Framework)</li>
+                        <li><code>Taqwa-Guard</code> (Security Middleware)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem; font-size: 1rem; margin-bottom: 0.5rem;">Contribution Activity</h3>
+            <div class="contribution-graph">
+                <div class="graph-grid" id="contribution-grid">
+                    <!-- JS will populate -->
+                </div>
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
+                    <span style="margin-right: 0.5rem;">Less</span>
+                    <div class="graph-day level-0" style="margin-right: 2px;"></div>
+                    <div class="graph-day level-1" style="margin-right: 2px;"></div>
+                    <div class="graph-day level-2" style="margin-right: 2px;"></div>
+                    <div class="graph-day level-3" style="margin-right: 2px;"></div>
+                    <div class="graph-day level-4" style="margin-right: 0.5rem;"></div>
+                    <span>More</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3>About</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    A lifelong project to attain the pleasure of the Creator. Open source for the Ummah.
+                </p>
+                
+                <div class="sidebar-item">
+                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 0.5rem;"><path fill-rule="evenodd" d="M11.5 8a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM8 11a3 3 0 100-6 3 3 0 000 6zM5 0a2 2 0 00-2 2v1.5H1.5A1.5 1.5 0 000 5v6a1.5 1.5 0 001.5 1.5h13A1.5 1.5 0 0016 11V5a1.5 1.5 0 00-1.5-1.5H13V2a2 2 0 00-2-2H5z"></path></svg>
+                    <strong>2</strong> watching
+                </div>
+                <div class="sidebar-item">
+                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 0.5rem;"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.075a.75.75 0 00.53-.22l1.562-1.562a1.5 1.5 0 00-1.061-2.56H2.75A2.75 2.75 0 000 2.75v5.025a1.5 1.5 0 002.56 1.06l1.562-1.561a.75.75 0 00-.22-.53zM13.25 8.225a.25.25 0 01.25.25v5.075a.75.75 0 00-.22.53l-1.562 1.562a1.5 1.5 0 002.56 1.061h5.025A2.75 2.75 0 0022 13.96v-5.025a1.5 1.5 0 00-1.06-2.56l-1.562 1.561a.75.75 0 00.53.22zM7.775 2.5a.25.25 0 01.25.25v5.075a.75.75 0 00.22.53l1.562 1.562a1.5 1.5 0 002.56-1.061H7.29a2.75 2.75 0 00-2.75 2.75v5.025a1.5 1.5 0 001.06 2.56l1.562-1.561a.75.75 0 00-.53-.22zM2.5 13.96V8.935a.75.75 0 00-.22-.53l-1.562-1.562A1.5 1.5 0 002.56 4.28h5.025a.25.25 0 01.25.25v5.075a2.75 2.75 0 01-2.75 2.75H2.75a1.5 1.5 0 01-1.06-2.56l1.561-1.562a.75.75 0 01.53.22z"></path></svg>
+                    0 forks
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Languages</h3>
+                <div class="lang-bar" id="lang-bar">
+                    <!-- JS populated -->
+                </div>
+                <ul class="lang-list" id="lang-list">
+                    <!-- JS populated -->
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Utility: Format Date
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return "just now";
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} minutes ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} hours ago`;
+            const days = Math.floor(hours / 24);
+            return `${days} days ago`;
+        }
+
+        // Fetch commits from API
+        async function loadData() {
+            try {
+                const response = await fetch('/api/commits');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const commits = await response.json();
+                renderData(commits);
+            } catch (e) {
+                console.log("Could not load commits, using demo data", e);
+                renderDemoData();
+            }
+        }
+
+        function renderDemoData() {
+            const demoCommits = [
+                { timestamp: new Date().toISOString(), message: "Smiled at a stranger", hash: "a1b2c3d" },
+                { timestamp: new Date(Date.now() - 86400000).toISOString(), message: "Prayed Fajr on time", hash: "e5f6g7h" },
+                { timestamp: new Date(Date.now() - 172800000).toISOString(), message: "Gave charity", hash: "i8j9k0l" },
+                { timestamp: new Date(Date.now() - 259200000).toISOString(), message: "Read Surah Kahf", hash: "m1n2o3p" },
+                { timestamp: new Date(Date.now() - 345600000).toISOString(), message: "Helped parents", hash: "q4r5s6t" },
+            ];
+            renderData(demoCommits);
+            
+            // Add a demo badge
+            const header = document.querySelector('header');
+            if(header) {
+                const badge = document.createElement('div');
+                badge.style.position = 'absolute';
+                badge.style.top = '0';
+                badge.style.left = '50%';
+                badge.style.transform = 'translateX(-50%)';
+                badge.style.background = 'var(--accent-gold)';
+                badge.style.color = '#000';
+                badge.style.padding = '0.2rem 1rem';
+                badge.style.fontSize = '0.7rem';
+                badge.style.fontWeight = 'bold';
+                badge.style.borderBottomLeftRadius = '4px';
+                badge.style.borderBottomRightRadius = '4px';
+                badge.textContent = 'DEMO MODE';
+                header.appendChild(badge);
+            }
+        }
+
+        function renderData(commits) {
+            // Update Sidebar Stats
+            const starCount = document.getElementById('star-count');
+            if(starCount) starCount.textContent = commits.length;
+            
+            const forkCount = document.getElementById('fork-count');
+            if(forkCount) forkCount.textContent = "0"; 
+
+            if (commits.length > 0) {
+                const latest = commits[commits.length - 1];
+                document.getElementById('latest-commit-msg').textContent = latest.message;
+                document.getElementById('latest-commit-time').textContent = timeAgo(latest.timestamp);
+                document.getElementById('latest-commit-hash').textContent = latest.hash;
+            } else {
+                 document.getElementById('latest-commit-msg').textContent = "No deeds recorded yet";
+                 document.getElementById('latest-commit-hash').textContent = "";
+            }
+
+            renderFileList(commits);
+            renderGraph(commits);
+            renderLanguages(commits);
+        }
+
+        function renderFileList(commits) {
+            const list = document.getElementById('repo-file-list');
+            if(!list) return;
+            list.innerHTML = '';
+            
+            // Show last 7 deeds as "files"
+            // If no deeds, show a placeholder or the "Core" structure
+            
+            let displayCommits = [];
+            if (commits.length === 0) {
+                 // Metaphorical default files if empty
+                 displayCommits = [
+                    { message: "Foundation of Tawheed", timestamp: new Date().toISOString(), isStatic: true, path: "core/beliefs" },
+                    { message: "Intention set", timestamp: new Date().toISOString(), isStatic: true, path: "niyyah.config.json" }
+                 ];
+            } else {
+                displayCommits = [...commits].reverse().slice(0, 10);
+            }
+            
+            displayCommits.forEach(c => {
+                const li = document.createElement('li');
+                li.className = 'file-item';
+                
+                // If it's a real commit, generate a path
+                let path = c.path;
+                let iconColor = "#54aeff"; // folder blue
+                let isFolder = false;
+
+                if (!path) {
+                    // Generate pseudo-path based on content
+                    const msg = c.message.toLowerCase();
+                    if (msg.includes("pray") || msg.includes("salah") || msg.includes("fajr")) {
+                        path = `src/worship/${c.message.replace(/\s+/g, '_').substring(0,15)}.ts`;
+                        iconColor = "#2ea043"; // green
+                    } else if (msg.includes("read") || msg.includes("quran") || msg.includes("study")) {
+                        path = `src/ilm/${c.message.replace(/\s+/g, '_').substring(0,15)}.md`;
+                        iconColor = "#d4af37"; // gold
+                    } else if (msg.includes("help") || msg.includes("charity") || msg.includes("give")) {
+                         path = `src/sadaqah/${c.message.replace(/\s+/g, '_').substring(0,15)}.tsx`;
+                         iconColor = "#db6d28"; // orange
+                    } else {
+                        path = `src/deeds/${c.message.replace(/\s+/g, '_').substring(0,15)}.ts`;
+                    }
+                }
+
+                const timeDisplay = c.isStatic ? "Eternal" : timeAgo(c.timestamp);
+                
+                // SVG Icon
+                const svgIcon = `<svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>`;
+
+                li.innerHTML = `
+                    <span class="file-icon" style="color: ${iconColor}">
+                        ${svgIcon}
+                    </span>
+                    <a href="#" class="file-name" style="color: var(--text-primary); text-decoration: none;">${path}</a>
+                    <span class="file-desc">${c.message}</span>
+                    <span class="file-time">${timeDisplay}</span>
+                `;
+                list.appendChild(li);
+            });
+
+            // Always add README.md
+            const readme = document.createElement('li');
+            readme.className = 'file-item';
+            readme.innerHTML = `
+                <span class="file-icon">
+                    <svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>
+                </span>
+                <a href="#" class="file-name">README.md</a>
+                <span class="file-desc">Initial commit</span>
+                <span class="file-time">Creation</span>
+            `;
+            list.appendChild(readme);
+        }
+
+        function renderLanguages(commits) {
+            const counts = { Tawakkul: 0, Sabr: 0, Jihad: 0, Ibadah: 0, Ilm: 0, Sadaqah: 0, Other: 0 };
+            
+            commits.forEach(c => {
+                const msg = c.message.toLowerCase();
+                if (msg.includes("trust") || msg.includes("allah") || msg.includes("plan")) counts.Tawakkul++;
+                else if (msg.includes("patience") || msg.includes("wait") || msg.includes("sabr") || msg.includes("calm") || msg.includes("anger")) counts.Sabr++;
+                else if (msg.includes("struggle") || msg.includes("fight") || msg.includes("hard") || msg.includes("nafs") || msg.includes("sin")) counts.Jihad++;
+                else if (msg.includes("pray") || msg.includes("salah") || msg.includes("namaz") || msg.includes("fajr") || msg.includes("dhikr") || msg.includes("fast") || msg.includes("sunnah")) counts.Ibadah++;
+                else if (msg.includes("read") || msg.includes("learn") || msg.includes("study") || msg.includes("book") || msg.includes("quran") || msg.includes("listen")) counts.Ilm++;
+                else if (msg.includes("give") || msg.includes("help") || msg.includes("money") || msg.includes("smile") || msg.includes("feed") || msg.includes("donate") || msg.includes("mother") || msg.includes("father") || msg.includes("family") || msg.includes("call") || msg.includes("visit")) counts.Sadaqah++;
+                else counts.Other++;
+            });
+
+            const total = commits.length || 1; // avoid divide by zero
+            
+            // Convert to array and sort
+            const sorted = Object.entries(counts)
+                .filter(([_, count]) => count > 0)
+                .sort((a, b) => b[1] - a[1]);
+            
+            // If empty, show default
+            if (sorted.length === 0) {
+                 sorted.push(["Niyyah", 1]);
+            }
+
+            const bar = document.getElementById('lang-bar');
+            const list = document.getElementById('lang-list');
+            if(bar) bar.innerHTML = '';
+            if(list) list.innerHTML = '';
+
+            const colors = {
+                Tawakkul: '#d4af37', // Gold
+                Sabr: '#2ea043', // Green
+                Jihad: '#da3633', // Red
+                Ibadah: '#a371f7', // Purple
+                Ilm: '#54aeff', // Blue
+                Sadaqah: '#db6d28', // Orange
+                Other: '#8b949e', // Grey
+                Niyyah: '#ffffff'
+            };
+
+            sorted.forEach(([lang, count]) => {
+                const percent = ((count / total) * 100).toFixed(1);
+                
+                // Bar segment
+                const segment = document.createElement('div');
+                segment.className = 'lang-segment';
+                segment.style.width = `${percent}%`;
+                segment.style.background = colors[lang] || colors.Other;
+                bar.appendChild(segment);
+                
+                // List item
+                const li = document.createElement('li');
+                li.style.fontSize = '0.8rem';
+                li.style.color = 'var(--text-secondary)';
+                li.innerHTML = `<span class="lang-dot" style="background: ${colors[lang] || colors.Other};"></span>${lang} ${percent}%`;
+                list.appendChild(li);
+            });
+        }
+
+        function renderGraph(commits) {
+            const grid = document.getElementById('contribution-grid');
+            grid.innerHTML = '';
+            
+            const activity = {};
+            commits.forEach(c => {
+                const date = c.timestamp.split('T')[0];
+                activity[date] = (activity[date] || 0) + 1;
+            });
+
+            // Get start date (365 days ago)
+            const today = new Date();
+            const startDate = new Date();
+            startDate.setDate(today.getDate() - 365);
+
+            for (let i = 0; i < 371; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dateStr = currentDate.toISOString().split('T')[0];
+                
+                const div = document.createElement('div');
+                const count = activity[dateStr] || 0;
+                
+                let level = 'level-0';
+                if (count > 0) level = 'level-1';
+                if (count > 2) level = 'level-2';
+                if (count > 4) level = 'level-3';
+                if (count > 6) level = 'level-4';
+                
+                div.className = `graph-day ${level}`;
+                div.title = `${count} deeds on ${dateStr}`;
+                grid.appendChild(div);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

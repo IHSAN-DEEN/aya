@@ -1,0 +1,35 @@
+{
+  "name": "islamic-cli",
+  "version": "1.0.0",
+  "description": "> \"We will show them Our signs in the horizons and within themselves until it becomes clear to them that it is the truth.\" (41:53)",
+  "main": "index.js",
+  "bin": {
+    "aya": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "site": "ts-node src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/figlet": "^1.7.0",
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^25.3.0",
+    "axios": "^1.13.5",
+    "boxen": "^5.1.2",
+    "chalk": "^4.1.2",
+    "commander": "^14.0.3",
+    "conf": "^15.1.0",
+    "date-fns": "^4.1.0",
+    "figlet": "^1.10.0",
+    "inquirer": "^8.2.7",
+    "node-fetch": "^2.7.0",
+    "ora": "^5.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

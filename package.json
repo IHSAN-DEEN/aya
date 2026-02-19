@@ -1,8 +1,8 @@
 {
   "name": "islamic-cli",
   "version": "1.0.0",
-  "description": "> \"We will show them Our signs in the horizons and within themselves until it becomes clear to them that it is the truth.\" (41:53)",
-  "main": "index.js",
+  "description": "A CLI tool for the mindful Muslim developer. Track your spiritual commits, manage your sins (issues), and push good deeds to the akhira.",
+  "main": "dist/index.js",
   "bin": {
     "aya": "./dist/index.js"
   },
@@ -12,9 +12,28 @@
     "site": "ts-node src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shajedulkarim/islamic-cli.git"
+  },
+  "homepage": "https://shajedulkarim.github.io/islamic-cli",
+  "bugs": {
+    "url": "https://github.com/shajedulkarim/islamic-cli/issues"
+  },
+  "keywords": [
+    "islam",
+    "muslim",
+    "cli",
+    "productivity",
+    "spiritual",
+    "developer",
+    "quran",
+    "sunnah",
+    "prayer-times",
+    "adhkar"
+  ],
+  "author": "Shajedul Karim <shajedulkarim@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@types/figlet": "^1.7.0",
     "@types/inquirer": "^9.0.9",

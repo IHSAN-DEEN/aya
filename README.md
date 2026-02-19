@@ -2,7 +2,11 @@
 
 > "And We have fastened every man's deeds to his neck, and on the Day of Resurrection, We shall bring out for him a book which he will find wide open." (17:13)
 
-![aya-cli-banner](https://user-images.githubusercontent.com/placeholder/aya-banner.png)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fshajedulkarim.github.io%2Fislamic-cli&label=Book%20of%20Deeds)](https://shajedulkarim.github.io/islamic-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Contributing: Sadaqah Jariyah](https://img.shields.io/badge/Contributing-Sadaqah%20Jariyah-green)](CONTRIBUTING.md)
+
+**[🌐 Live Demo: The Book of Deeds](https://shajedulkarim.github.io/islamic-cli)**
 
 ## What is this? 🤔
 
@@ -72,7 +76,7 @@ npm install -g islamic-cli
 *(Or clone this repo and run locally)*
 
 ```bash
-git clone https://github.com/yourusername/islamic-cli.git
+git clone https://github.com/shajedulkarim/islamic-cli.git
 cd islamic-cli
 npm install
 npm run build

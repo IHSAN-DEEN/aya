@@ -3,669 +3,1046 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Book of Deeds • aya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>aya | The Believer's Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f1115;
-            --card-bg: rgba(22, 27, 34, 0.8);
-            --border-color: #30363d;
-            --text-primary: #c9d1d9;
-            --text-secondary: #8b949e;
-            --accent-gold: #d4af37;
-            --accent-green: #2ea043;
-            --accent-red: #da3633;
-            --font-cinematic: 'Cinzel', serif;
-            --font-body: 'Playfair Display', serif;
+            --bg: #050505;
+            --surface: #0a0a0a;
+            --surface-hover: #111111;
+            --text: #e5e5e5;
+            --text-muted: #888888;
+            --gold: #d4af37;
+            --gold-dim: #8a702a;
+            --accent: #d4af37;
+            --border: #333333;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
             --font-mono: 'Fira Code', monospace;
-            --font-ui: 'Inter', sans-serif;
+            --font-arabic: 'Amiri', serif;
+            --font-cinematic: 'Cinzel', serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-ui);
-            line-height: 1.5;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient Background */
-        .ambient-bg {
+        /* Cinematic Grain & Lighting */
+        .noise {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(46, 160, 67, 0.05) 0%, transparent 40%);
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
             pointer-events: none;
+            z-index: 999;
+            opacity: 0.03;
         }
 
-        /* Header */
-        header {
-            background: #161b22;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .ambient-light {
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03), transparent 60%);
+            pointer-events: none;
+            z-index: -1;
+            animation: pulseLight 10s infinite alternate;
         }
 
-        .repo-breadcrumb {
-            display: flex;
-            align-items: center;
-            font-size: 1.25rem;
-            color: var(--accent-gold);
-            font-family: var(--font-cinematic);
+        @keyframes pulseLight {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.8; }
         }
 
-        .repo-breadcrumb svg { margin-right: 0.5rem; }
-        .repo-breadcrumb span { margin: 0 0.5rem; color: var(--text-secondary); }
-        .repo-name { font-weight: 700; }
-        .badge-public {
-            border: 1px solid var(--border-color);
-            border-radius: 2rem;
-            padding: 0.1rem 0.5rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-left: 1rem;
-            font-family: var(--font-ui);
-        }
-
-        /* Tabs */
-        .repo-tabs {
-            background: #161b22;
+        /* Typography Utilities */
+        .font-serif { font-family: var(--font-serif); }
+        .font-mono { font-family: var(--font-mono); }
+        .font-arabic { font-family: var(--font-arabic); }
+        .text-gold { color: var(--gold); }
+        .text-dim { color: var(--text-muted); }
+        .uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        h1, h2, h3 { font-weight: 400; }
+        
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 0 2rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
         }
 
-        .tab-item {
-            padding: 1rem 0;
-            color: var(--text-primary);
-            text-decoration: none;
+        /* Hero Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: var(--font-cinematic);
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards 0.5s;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards 1s;
+        }
+
+        /* Install Bar */
+        .install-container {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards 1.2s;
+            position: relative;
+            z-index: 10;
+        }
+
+        .install-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text);
+            position: relative;
+        }
+
+        .install-bar:hover {
+            border-color: var(--gold);
+            background: rgba(20, 20, 20, 0.9);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .install-bar .prompt {
+            color: var(--gold-dim);
+            user-select: none;
+        }
+
+        .install-bar .cmd-text {
+            color: var(--text);
+        }
+
+        .install-bar .copy-icon {
+            color: var(--text-muted);
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .install-bar:hover .copy-icon {
+            color: var(--gold);
+        }
+
+        .copy-feedback {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .copy-feedback.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        .terminal-window {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            text-align: left;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards 1.5s;
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .terminal-window:hover {
+            transform: perspective(1000px) rotateX(0deg);
+            border-color: var(--gold-dim);
+        }
+
+        .prompt { color: var(--gold); }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--gold); animation: blink 1s infinite; }
+
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Manifesto */
+        .manifesto {
+            padding: 8rem 0;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .manifesto p {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+
+        .manifesto .highlight {
+            color: var(--text);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        /* Commands Grid */
+        .grid-section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: var(--font-cinematic);
+            font-size: 3rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .section-header p {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Navigation */
+        .filter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-cinematic);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            color: var(--gold);
+        }
+
+        .filter-btn:hover::after, .filter-btn.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .cmd-card {
+            background: rgba(20, 20, 20, 0.4);
+            border: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0; /* JS reveal */
+            transform: translateY(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .cmd-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--gold-dim);
+            background: rgba(20, 20, 20, 0.95);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 2;
+        }
+
+        .cmd-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 0;
+            background: var(--gold);
+            transition: height 0.5s ease;
+            z-index: 3;
+        }
+
+        .cmd-card:hover::before {
+            height: 100%;
+        }
+
+        /* Large Watermark Arabic */
+        .watermark-arabic {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-family: var(--font-arabic);
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+            transition: transform 0.5s ease, color 0.5s ease;
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .cmd-card:hover .watermark-arabic {
+            transform: scale(1.1) rotate(-5deg);
+            color: rgba(212, 175, 55, 0.05);
+        }
+
+        .cmd-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cmd-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.8rem;
+        }
+
+        .copy-btn-mini {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+        }
+
+        .copy-btn-mini:hover {
+            color: var(--gold);
+            border-color: var(--gold-dim);
+            background: rgba(212, 175, 55, 0.05);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .copy-btn-mini.copied {
+            color: var(--green);
+            border-color: var(--green);
+        }
+
+        .cmd-name {
+            font-family: var(--font-mono);
+            color: var(--gold);
+            font-size: 0.95rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cmd-title {
+            font-family: var(--font-cinematic);
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            letter-spacing: 0.05em;
+        }
+
+        .cmd-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-family: var(--font-serif);
+        }
+
+        .cmd-meta {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--gold-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            border-bottom: 2px solid transparent;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            transition: all 0.2s;
+            opacity: 0.8;
         }
 
-        .tab-item:hover { opacity: 1; }
-        .tab-item.active {
-            border-bottom-color: var(--accent-gold);
-            font-weight: 600;
-            opacity: 1;
-        }
-
-        .count-badge {
-            background: rgba(110, 118, 129, 0.4);
-            border-radius: 2rem;
-            padding: 0 0.4rem;
-            font-size: 0.75rem;
-        }
-
-        /* Main Content */
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 2rem;
-        }
-
-        /* File Explorer */
-        .file-explorer {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: #0d1117;
-            overflow: hidden;
-        }
-
-        .commit-header {
-            background: #161b22;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .commit-info { display: flex; align-items: center; gap: 0.5rem; }
-        .avatar {
-            width: 24px; height: 24px;
+        .cmd-meta::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
             border-radius: 50%;
-            background: var(--accent-gold);
-            display: flex; align-items: center; justify-content: center;
-            color: #000; font-weight: bold; font-size: 12px;
-        }
-        .commit-message { color: var(--text-primary); font-weight: 500; }
-        .commit-time { color: var(--text-secondary); font-size: 0.8rem; }
-        .commit-hash { font-family: var(--font-mono); color: var(--text-secondary); }
-
-        .file-list { list-style: none; }
-        .file-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s;
-            cursor: pointer;
         }
 
-        .file-item:last-child { border-bottom: none; }
-        .file-item:hover { background: #161b22; }
-        
-        .file-icon { color: var(--text-secondary); }
-        .file-icon.folder { color: #54aeff; }
-        .file-name { color: var(--text-primary); text-decoration: none; }
-        .file-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        .file-time { color: var(--text-secondary); font-size: 0.8rem; text-align: right; }
+        /* Hidden state for filtering */
+        .cmd-card.hidden {
+            display: none;
+        }
 
-        /* Readme Section */
-        .readme-container {
-            margin-top: 2rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-serif);
         }
-        .readme-header {
-            padding: 0.5rem 1rem;
-            background: #161b22;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .readme-content {
-            padding: 2rem;
-            background: #0d1117;
-            font-family: var(--font-body);
-        }
-        .readme-content h1 {
+
+        .ihsan-link {
             font-family: var(--font-cinematic);
-            color: var(--accent-gold);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .readme-content p { margin-bottom: 1rem; color: var(--text-primary); }
-        .readme-content blockquote {
-            border-left: 4px solid var(--accent-gold);
-            padding-left: 1rem;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* Sidebar */
-        .sidebar h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        .sidebar-section {
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
-        }
-        .sidebar-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .lang-bar {
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            margin-top: 1rem;
-        }
-        .lang-segment { height: 100%; }
-        .lang-list { margin-top: 0.5rem; list-style: none; }
-        .lang-dot {
+            font-weight: 400;
+            background: linear-gradient(135deg, #d4af37, #f8e5b8, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            position: relative;
             display: inline-block;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
         }
 
-        /* Contribution Graph */
-        .contribution-graph {
+        .ihsan-link:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* Grid Lines for Architectural Feel */
+        .grid-lines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.03;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .repo-link-btn {
+            display: inline-block;
             margin-top: 2rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            background: #0d1117;
+            padding: 0.8rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-family: var(--font-cinematic);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
-        .graph-grid {
-            display: grid;
-            grid-template-columns: repeat(53, 1fr);
-            gap: 3px;
-            margin-top: 0.5rem;
-        }
-        .graph-day {
-            width: 10px; height: 10px;
-            background: #161b22;
-            border-radius: 2px;
-        }
-        .level-0 { background: #161b22; }
-        .level-1 { background: #0e4429; }
-        .level-2 { background: #006d32; }
-        .level-3 { background: #26a641; }
-        .level-4 { background: #39d353; }
-
-        @media (max-width: 768px) {
-            main { grid-template-columns: 1fr; }
-            .file-desc { display: none; }
+        
+        .repo-link-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="ambient-bg"></div>
 
-    <header>
-        <div class="repo-breadcrumb">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
-            <a href="#" style="color: var(--accent-gold); text-decoration: none;">ServantOfAllah</a>
-            <span>/</span>
-            <span class="repo-name">book-of-deeds</span>
-            <span class="badge-public">Public</span>
+    <div class="noise"></div>
+    <div class="ambient-light"></div>
+    <div class="grid-lines"></div>
+
+    <header class="container">
+        <h1 class="hero-title">The Believer's <span class="text-gold">Interface</span></h1>
+        <div class="hero-subtitle">
+            A CLI tool for the mindful Muslim developer.<br>
+            Track your spiritual commits, manage your sins (issues),<br>
+            and push good deeds to the Akhira.
         </div>
         
-        <div style="display: flex; gap: 1rem;">
-            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
-                ★ Star <span class="count-badge" id="star-count">0</span>
-            </button>
-            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
-                ⑂ Fork <span class="count-badge" id="fork-count">0</span>
-            </button>
+        <div class="install-container" onclick="copyInstall()">
+            <div class="copy-feedback" id="feedback">Copied!</div>
+            <div class="install-bar">
+                <span class="prompt">$</span>
+                <span class="cmd-text">npm install -g islamic-cli</span>
+                <svg class="copy-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <a href="https://github.com/shajedulkarim/islamic-cli" class="cta-button">
+                View on GitHub
+            </a>
+            <a href="repo.html" class="cta-button" style="background: transparent; border: 1px solid var(--border);">
+                Open Book of Deeds
+            </a>
+        </div>
+
+        <div class="terminal-window" id="terminal">
+            <div id="terminal-content"></div>
         </div>
     </header>
 
-    <div class="repo-tabs">
-        <a href="#" class="tab-item active">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M4.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 2.75C3.5 2.06 4.06 1.5 4.75 1.5h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M4.75 9.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 9.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M9.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM8.5 2.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
-            Deeds (Code)
-        </a>
-        <a href="#" class="tab-item">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
-            Istighfar (Issues) <span class="count-badge">3</span>
-        </a>
-        <a href="#" class="tab-item">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
-            Duas (Pull Requests) <span class="count-badge">∞</span>
-        </a>
-        <a href="#" class="tab-item">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z"></path></svg>
-            Actions (Rituals)
-        </a>
-        <a href="#" class="tab-item">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM1.5 10h13v1.5h-13V10zm13-3h-13v1.5h13V7z"></path></svg>
-            Projects (Goals)
-        </a>
-        <a href="#" class="tab-item">
-            <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h1a.5.5 0 00.5-.5V3a.5.5 0 00-.5-.5H2zM3 6H2v1h1V6zm0 3H2v1h1V9zm0 3H2v1h1v-1zm1.5-6h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5zm.5 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11zM16 12.5a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1z"></path></svg>
-            Wiki (Ilm)
-        </a>
-    </div>
+    <section class="manifesto container">
+        <p>In a world obsessed with <span class="highlight">speed</span>, we have lost the art of <span class="highlight">stillness</span>.</p>
+        <p>We build systems to manage data, but we have no system to manage our <span class="highlight">hearts</span>.</p>
+        <p><strong>aya</strong> is not just a CLI. It is a reminder. A digital companion for the spiritual journey.</p>
+        <p style="font-size: 1.2rem; margin-top: 2rem; color: var(--gold);">Use it to align your workflow with your purpose.</p>
+    </section>
 
-    <main>
-        <!-- Main Repo Content -->
-        <div class="content-col">
-            
-            <div class="file-explorer">
-                <div class="commit-header">
-                    <div class="commit-info">
-                        <div class="avatar">U</div>
-                        <span class="commit-message" id="latest-commit-msg">Loading latest deed...</span>
-                        <span class="commit-hash" id="latest-commit-hash">...</span>
-                    </div>
-                    <div class="commit-time" id="latest-commit-time">Just now</div>
-                </div>
-
-                <ul class="file-list" id="repo-file-list">
-                    <!-- JS will populate -->
-                    <li class="file-item" style="justify-content: center; color: var(--text-secondary);">
-                        Loading deeds...
-                    </li>
-                </ul>
-            </div>
-
-            <div class="readme-container">
-                <div class="readme-header">
-                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="vertical-align: text-bottom; margin-right: 0.5rem;"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 00-.5.5v11a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V4.5l-4-4H2zM3 4V3h4.5l.5.5v.5H3zM3 14V5h5v9H3z"></path></svg>
-                    README.md
-                </div>
-                <div class="readme-content">
-                    <h1>Book of Deeds</h1>
-                    <p>Welcome to the central repository of my life. This project is a continuous integration of faith, actions, and self-improvement.</p>
-                    
-                    <blockquote>
-                        "And We have fastened every man's deeds to his neck, and on the Day of Resurrection, We shall bring out for him a book which he will find wide open." (17:13)
-                    </blockquote>
-
-                    <h3>Mission Statement</h3>
-                    <p>To compile a bug-free record of good deeds, merge frequent pull requests (Duas), and deploy a successful soul to the Akhirah (Production Environment).</p>
-
-                    <h3>Core Dependencies</h3>
-                    <ul>
-                        <li><code>Quran v1.0.0</code> (Immutable Source of Truth)</li>
-                        <li><code>Sunnah.js</code> (Implementation Framework)</li>
-                        <li><code>Taqwa-Guard</code> (Security Middleware)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3 style="margin-top: 2rem; font-size: 1rem; margin-bottom: 0.5rem;">Contribution Activity</h3>
-            <div class="contribution-graph">
-                <div class="graph-grid" id="contribution-grid">
-                    <!-- JS will populate -->
-                </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
-                    <span style="margin-right: 0.5rem;">Less</span>
-                    <div class="graph-day level-0" style="margin-right: 2px;"></div>
-                    <div class="graph-day level-1" style="margin-right: 2px;"></div>
-                    <div class="graph-day level-2" style="margin-right: 2px;"></div>
-                    <div class="graph-day level-3" style="margin-right: 2px;"></div>
-                    <div class="graph-day level-4" style="margin-right: 0.5rem;"></div>
-                    <span>More</span>
-                </div>
-            </div>
-
+    <section class="grid-section container">
+        <div class="section-header">
+            <h2 class="section-title">The Command Set</h2>
+            <p class="text-dim">Comprehensive documentation for the spiritual developer.</p>
+        </div>
+        
+        <div class="filter-nav">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Core">Core</button>
+            <button class="filter-btn" data-filter="Worship">Worship</button>
+            <button class="filter-btn" data-filter="Knowledge">Knowledge</button>
+            <button class="filter-btn" data-filter="Character">Character</button>
+            <button class="filter-btn" data-filter="Reflection">Reflection</button>
         </div>
 
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <h3>About</h3>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                    A lifelong project to attain the pleasure of the Creator. Open source for the Ummah.
-                </p>
-                
-                <div class="sidebar-item">
-                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 0.5rem;"><path fill-rule="evenodd" d="M11.5 8a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM8 11a3 3 0 100-6 3 3 0 000 6zM5 0a2 2 0 00-2 2v1.5H1.5A1.5 1.5 0 000 5v6a1.5 1.5 0 001.5 1.5h13A1.5 1.5 0 0016 11V5a1.5 1.5 0 00-1.5-1.5H13V2a2 2 0 00-2-2H5z"></path></svg>
-                    <strong>2</strong> watching
-                </div>
-                <div class="sidebar-item">
-                    <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 0.5rem;"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.075a.75.75 0 00.53-.22l1.562-1.562a1.5 1.5 0 00-1.061-2.56H2.75A2.75 2.75 0 000 2.75v5.025a1.5 1.5 0 002.56 1.06l1.562-1.561a.75.75 0 00-.22-.53zM13.25 8.225a.25.25 0 01.25.25v5.075a.75.75 0 00-.22.53l-1.562 1.562a1.5 1.5 0 002.56 1.061h5.025A2.75 2.75 0 0022 13.96v-5.025a1.5 1.5 0 00-1.06-2.56l-1.562 1.561a.75.75 0 00.53.22zM7.775 2.5a.25.25 0 01.25.25v5.075a.75.75 0 00.22.53l1.562 1.562a1.5 1.5 0 002.56-1.061H7.29a2.75 2.75 0 00-2.75 2.75v5.025a1.5 1.5 0 001.06 2.56l1.562-1.561a.75.75 0 00-.53-.22zM2.5 13.96V8.935a.75.75 0 00-.22-.53l-1.562-1.562A1.5 1.5 0 002.56 4.28h5.025a.25.25 0 01.25.25v5.075a2.75 2.75 0 01-2.75 2.75H2.75a1.5 1.5 0 01-1.06-2.56l1.561-1.562a.75.75 0 01.53.22z"></path></svg>
-                    0 forks
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h3>Languages</h3>
-                <div class="lang-bar" id="lang-bar">
-                    <!-- JS populated -->
-                </div>
-                <ul class="lang-list" id="lang-list">
-                    <!-- JS populated -->
-                </ul>
-            </div>
+        <div class="masonry-grid" id="command-grid">
+            <!-- Commands will be injected here by JS -->
         </div>
-    </main>
+    </section>
+
+    <footer>
+        <p>Built with ❤️ by <a href="https://ihsandeen.com/" target="_blank" class="ihsan-link">IHSAN</a></p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Open source for the Ummah.</p>
+        <p class="font-mono" style="margin-top: 0.5rem; opacity: 0.5;">v1.0.0 • 1446 AH</p>
+    </footer>
 
     <script>
-        // Utility: Format Date
-        function timeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-            
-            if (seconds < 60) return "just now";
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes} minutes ago`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours} hours ago`;
-            const days = Math.floor(hours / 24);
-            return `${days} days ago`;
-        }
+        // Data: Comprehensive List of Commands with NAK-Style Descriptions
+        const commands = [
+    {
+        "name": "aya init",
+        "arabic": "نِيَّة",
+        "title": "Niyyah",
+        "desc": "In the depth of the Arabic language, the word 'Niyyah' comes from 'Nawa', which is the date stone. Think about a date stone. It's hard, it's buried deep in the ground, and nobody sees it. But that entire massive palm tree, the shade it gives, the fruit it bears—it all comes from that one hidden core. If the stone is rotten, there is no tree. If the intention is corrupt, the action is hollow. Before you type `git init` or start a project, check your Niyyah. Is this for fame? For money alone? Or to build something beneficial? The Prophet ﷺ said 'Actions are but by intentions'. Your codebase is the tree; your intention is the seed.",
+        "meta": "Intention"
+    },
+    {
+        "name": "aya status",
+        "arabic": "مُحَاسَبَة",
+        "title": "Muhasaba",
+        "desc": "The word 'Hasiba' means to calculate or reckon. On the Day of Judgment, we will have a 'Hisab'—a full audit. But the intelligent one is he who audits himself (Muhasaba) before he is audited. It's looking in the mirror and asking: 'What is my real state right now?' Not what I tell people, but what is the reality of my file system? When you run `git status`, you see what's staged, what's untracked, what's modified. Do this for your heart. What sins are modified but not committed? What good deeds are staged? What part of your character is untracked and wild?",
+        "meta": "Self-Accountability"
+    },
+    {
+        "name": "aya add",
+        "arabic": "إِعْدَاد",
+        "title": "I'dad",
+        "desc": "The Quran speaks of 'Wa a'iddu lahum' - Prepare for them whatever force you can. Preparation is half the victory. When you stage files, you are deliberately choosing what becomes part of your history. You aren't just throwing things in; you are selecting the best to present. Don't just drift through life. Stage your day. Stage your prayers. Be intentional about what you are about to commit to your book of deeds.",
+        "meta": "Preparation"
+    },
+    {
+        "name": "aya commit",
+        "arabic": "أَمَانَة",
+        "title": "Amanah",
+        "desc": "In the pre-Islamic era, if a man gave his word ('Ahd), he would die defending it. Islam elevated this. Your word is your bond. When you make a 'commit', you are saving a checkpoint in history. You are saying 'I stand by this code'. It is a testimony. Every day is a series of commits. You commit to a meeting, a prayer, a relationship. Are your commit messages (your intentions) clear? Or are they 'wip', 'fix', 'misc'? Be clear with Allah and yourself.",
+        "meta": "Trust"
+    },
+    {
+        "name": "aya push",
+        "arabic": "تَبْلِيغ",
+        "title": "Tabligh",
+        "desc": "The Prophet ﷺ was commanded: 'Balligh ma onzila ilayk' - Convey what has been revealed to you. Pushing isn't just moving data; it's delivering a message. It's sharing benefit. But with the power to push comes the responsibility of what you are pushing. Is it bug-free? Is it truthful? You have knowledge, wealth, or a smile. Push it to the remote (the world). Don't keep the khair (goodness) in your local environment. Share it. But ensure it builds, not breaks.",
+        "meta": "Conveying"
+    },
+    {
+        "name": "aya pull",
+        "arabic": "طَلَبُ الْعِلْم",
+        "title": "Talab al-'Ilm",
+        "desc": "We are not the source of knowledge; we are consumers of it. We 'pull' from the Divine source, from scholars, from history. Musa (AS) traveled specifically to 'pull' knowledge from Khidr. It requires humility. You have to admit your local version is behind. Always be pulling. If you stop syncing with the Quran and Sunnah, your branch diverges. You get conflicts. Stay up to date with the Master branch.",
+        "meta": "Seeking Knowledge"
+    },
+    {
+        "name": "aya blame",
+        "arabic": "لَوْم",
+        "title": "Lawm",
+        "desc": "The Quran swears by 'An-Nafs Al-Lawwama'—the self-reproaching soul. This is the soul that blames itself when it slips. In code, `git blame` tells you who wrote a line. In life, don't use 'blame' to point fingers at others. Use it to find where *you* introduced the bug. When calamity strikes, the believer asks 'What did I do?' The hypocrite asks 'Who did this to me?' Be the debugger of your own soul.",
+        "meta": "Self-Reproach"
+    },
+    {
+        "name": "aya diff",
+        "arabic": "فُرْقَان",
+        "title": "Furqan",
+        "desc": "The Quran is called Al-Furqan because it differentiates clearly between Truth and Falsehood, right and wrong. A 'diff' shows you exactly what changed. It removes the ambiguity. You need a Furqan in your life to see the difference between a good idea and a temptation. Look at your life a year ago vs today. Run a `diff`. Have you improved? Or have you regressed? Without a diff, you are blind to your own drift.",
+        "meta": "The Criterion"
+    },
+    {
+        "name": "aya history",
+        "arabic": "تَارِيخ",
+        "title": "Tarikh",
+        "desc": "History (Tarikh) isn't just dates. It's 'Ibrah'—lessons. The Quran is full of stories not for entertainment, but so we don't repeat the bugs of previous nations. `git log` shows you the path you took. If you don't know your history, you will re-introduce the same errors. Review your past commits. The days you were angry, the days you were patient. Learn from your own log. Don't rewrite history (force push); learn from it.",
+        "meta": "History"
+    },
+    {
+        "name": "aya adab",
+        "arabic": "أَدَب",
+        "title": "Adab",
+        "desc": "Adab is often translated as manners, but it means 'putting things in their proper place'. Adab with parents, Adab with teachers, Adab with code. A scholar said 'Make your knowledge salt, and your Adab the flour'. You need more manners than raw data. How do you comment on PRs? Harshly? Or with Adab? How do you treat junior devs? Adab is the API of human interaction.",
+        "meta": "Etiquette"
+    },
+    {
+        "name": "aya adhan",
+        "arabic": "أَذَان",
+        "title": "Adhan",
+        "desc": "The Adhan is the interruption of the Dunya for the sake of the Akhirah. It resets your priority queue. When the notification comes, do you swipe it away? Or do you answer? It's a call to success (Hayya 'ala al-Falah). Your prayer times are the breakpoints in your daily code. Stop execution. Debug your heart. Resume.",
+        "meta": "The Call"
+    },
+    {
+        "name": "aya anatomy",
+        "arabic": "خِلْقَة",
+        "title": "Khilqah",
+        "desc": "We have been created in the best stature (Ahsani Taqwim). But then we reduce ourselves. Understanding your spiritual anatomy—the Nafs (ego), the Qalb (heart), the Ruh (spirit)—is essential. You are not just hardware (body); you are software (soul). Debug your components. Is your Heart hard? Is your Ego inflated? Is your Spirit starved?",
+        "meta": "Creation"
+    },
+    {
+        "name": "aya dua",
+        "arabic": "دُعَاء",
+        "title": "Du'a",
+        "desc": "Du'a is the weapon of the believer. It is the direct line to the Admin. No pull request needed; it's an instant merge if the conditions are met. Allah is 'Al-Mujib' (The Responder). He doesn't leave you on 'read'. Code not working? Life falling apart? raise an Exception to the Most High. Make Du'a. It changes Qadr (destiny).",
+        "meta": "Supplication"
+    },
+    {
+        "name": "aya fast",
+        "arabic": "صِيَام",
+        "title": "Siyam",
+        "desc": "Siyam isn't just starving. It comes from a root meaning 'to hold back'. Horses that stood still were called 'Sa'im'. Fasting is a firewall. It blocks incoming desires so your system can cleanup and reboot. Fast from food, yes. But also fast from toxic words, angry comments, and haram glances. Enable the firewall.",
+        "meta": "Fasting"
+    },
+    {
+        "name": "aya friday",
+        "arabic": "جُمُعَة",
+        "title": "Jumu'ah",
+        "desc": "Yaum al-Jumu'ah is the weekly sync. The community gathers not just to pray, but to connect. It's the day Adam was created, and the day the Hour will be established. It's the 'master' branch update for the Ummah. Don't miss the Jumu'ah sync. It's mandatory. Wear your best, listen to the Khutbah (the weekly patch notes), and realign.",
+        "meta": "The Gathering"
+    },
+    {
+        "name": "aya hero",
+        "arabic": "قُدْوَة",
+        "title": "Qudwah",
+        "desc": "Everyone follows someone. Who is your hero? The Quran gives us the ultimate Qudwah: the Prophet ﷺ. In a world of influencers and tech moguls, who do you emulate? 'Laqad kana lakum fi Rasulillahi uswatun hasanah' - You have in the Messenger the best example. Check your dependencies. Who are you inheriting properties from? If your parent class is corrupt, your instance will be too.",
+        "meta": "Role Model"
+    },
+    {
+        "name": "aya hijri",
+        "arabic": "هِجْرَة",
+        "title": "Hijrah",
+        "desc": "The Islamic calendar doesn't start with the birth of the Prophet, but with the Hijrah—the sacrifice. It marks the shift from oppression to statehood. It reminds us that time is defined by action and movement, not just existence. Are you still living in the Jahiliyyah (ignorance) of your past? Make a Hijrah. Move away from bad habits to good ones.",
+        "meta": "Migration"
+    },
+    {
+        "name": "aya invest",
+        "arabic": "تِجَارَة",
+        "title": "Tijarah",
+        "desc": "Allah asks: 'Shall I tell you of a trade (Tijarah) that will save you from a painful punishment?' The believer is an investor. You trade your time and wealth in this Dunya for a return in Jannah. It's a long-term hold. Diamond hands for the Akhirah. Where is your capital going? Crypto? Stocks? Or Sadaqah Jariyah (ceaseless charity)? One crashes; the other compounds infinitely.",
+        "meta": "Trade"
+    },
+    {
+        "name": "aya journal",
+        "arabic": "مُحَاسَبَة",
+        "title": "Muhasaba",
+        "desc": "Umar (RA) said: 'Account for yourselves before you are accounted for.' Writing down your day—your wins, your sins—is a Sunnah of the introspective. It turns vague feelings into concrete data you can analyze. Start a spiritual log. Document your bugs. Track your feature requests (Duas).",
+        "meta": "Accounting"
+    },
+    {
+        "name": "aya journey",
+        "arabic": "سَفَر",
+        "title": "Safar",
+        "desc": "Life is a Safar. We are travelers. The Prophet ﷺ said: 'Be in this world as if you are a stranger or a traveler.' A traveler travels light. He doesn't build a mansion in the transit lounge. Check your baggage. Are you carrying too much Dunya? Lighten the load. The destination is close.",
+        "meta": "Travel"
+    },
+    {
+        "name": "aya lens",
+        "arabic": "بَصِيرَة",
+        "title": "Basirah",
+        "desc": "Basar is eyesight; Basirah is insight. It's the ability to see the reality of things, not just their appearance. It's the debugging tool for life. When others see a calamity, the person of Basirah sees a test and a purification. Clean your lens. Sin fogs the heart. Istighfar (seeking forgiveness) polishes it so you can see clearly again.",
+        "meta": "Insight"
+    },
+    {
+        "name": "aya memorize",
+        "arabic": "حِفْظ",
+        "title": "Hifz",
+        "desc": "Hifz means to guard/protect. When you memorize Quran, you are guarding it in your chest. But it also guards *you*. The Prophet ﷺ said the one without Quran in their heart is like a ruined house. What is cached in your memory? Lyrics? Memes? Or the Words of the Creator? Fill your RAM with Ayaat.",
+        "meta": "Preservation"
+    },
+    {
+        "name": "aya mirror",
+        "arabic": "مِرْآة",
+        "title": "Mir'ah",
+        "desc": "The Believer is the mirror of the Believer. A mirror doesn't lie. It doesn't scream. It just shows you the smudge on your face so you can wipe it. It reflects reality faithfully. Be a mirror to your brother. Correct him gently, privately. And accept correction when the mirror is held up to you.",
+        "meta": "Mirror"
+    },
+    {
+        "name": "aya names",
+        "arabic": "أَسْمَاءُ اللَّهِ",
+        "title": "Asma Allah",
+        "desc": "To know Him is to love Him. Allah has Beautiful Names (Al-Asma Al-Husna). He is Al-Wadud (The Loving), Al-Ghafur (The Forgiving). Don't just worship a generic 'God'. Worship the One with these specific attributes. Call upon Him by the Name that matches your need. Broke? Ya Razzaq. Sinful? Ya Ghaffar. Lonely? Ya Wadud.",
+        "meta": "Names of Allah"
+    },
+    {
+        "name": "aya nature",
+        "arabic": "فِطْرَة",
+        "title": "Fitrah",
+        "desc": "Every child is born on Fitrah—the factory setting. It is an inclination towards Truth and God. Society, parents, and sins corrupt this configuration. Islam is not a new plugin; it's a factory reset. Return to your source code. You were hardwired to know Allah. Ignore the bloatware of society.",
+        "meta": "Innate Nature"
+    },
+    {
+        "name": "aya nazm",
+        "arabic": "نَظْم",
+        "title": "Nazm",
+        "desc": "The Quran is not random. It is a Nazm—a perfectly arranged necklace. Every Ayah is connected to the next; every Surah pairs with its neighbor. It is a structural miracle. To see the Nazm is to see the Architect's plan. Look for the connections in your life. Nothing is random. Allah is the best of Planners.",
+        "meta": "Coherence"
+    },
+    {
+        "name": "aya parable",
+        "arabic": "مَثَل",
+        "title": "Mathal",
+        "desc": "Allah uses Mathal (parables) to make complex spiritual truths tangible. The hypocrite is like a rainfall... The deed is like a grain of corn... These aren't just stories; they are compression algorithms for wisdom. Reflect on the parables. Are you the rock that water runs off? Or the fertile soil that absorbs it?",
+        "meta": "Parable"
+    },
+    {
+        "name": "aya prayers",
+        "arabic": "صَلَاة",
+        "title": "Salah",
+        "desc": "Salah comes from Silah (connection). It is your link to the Divine. Without it, you are offline. The 5 daily prayers are the heartbeat of the believer. Miss them, and the spiritual heart stops. Is your Salah a burden or a relief? 'Arihna biha ya Bilal' - Give us rest with it, O Bilal. Debug your connection.",
+        "meta": "Connection"
+    },
+    {
+        "name": "aya qibla",
+        "arabic": "قِبْلَة",
+        "title": "Qiblah",
+        "desc": "The Qiblah unifies the Ummah. Millions of people, one focal point. It represents unity and purpose. If you don't have a Qiblah in life, you turn in every direction and go nowhere. Where are you facing? Is your heart facing the Dunya or the Akhirah? Align your compass.",
+        "meta": "Direction"
+    },
+    {
+        "name": "aya sabr",
+        "arabic": "صَبْر",
+        "title": "Sabr",
+        "desc": "Sabr is not just 'patience' (sitting and waiting). It means to tie down, to remain firm, to persevere. It's active, not passive. It's holding on to the hot coal. It's coding through the error until it's fixed. Sabr has three parts: Sabr on obedience, Sabr against sin, and Sabr on calamity. Which one are you struggling with?",
+        "meta": "Perseverance"
+    },
+    {
+        "name": "aya scene",
+        "arabic": "مَشْهَد",
+        "title": "Mashhad",
+        "desc": "The Quran paints scenes of the Day of Judgment so vivid you feel you are there. This is 'Visualized Faith'. You need to visualize the consequences to stay motivated. Visualize your standing before Allah. It puts your current stress in perspective.",
+        "meta": "Scene"
+    },
+    {
+        "name": "aya seek",
+        "arabic": "اِسْتِعَاذَة",
+        "title": "Isti'adhah",
+        "desc": "Before you recite, you say A'udhu billah. You seek refuge. You admit you are weak and need protection. The Shaytan is a hacker trying to inject malicious code into your heart. Activate the antivirus. Don't fight Shaytan alone. Run to Allah. You can't outsmart a creature thousands of years old, but Allah can.",
+        "meta": "Seeking Refuge"
+    },
+    {
+        "name": "aya shukr",
+        "arabic": "شُكْر",
+        "title": "Shukr",
+        "desc": "Shukr is not just saying 'Thanks'. It is using the blessing for the purpose it was created. If you have eyes but look at haram, you aren't grateful. 'La in shakartum la azidannakum' - If you are grateful, I will surely increase you. Gratitude is the abundance mindset. Ingratitude is the scarcity mindset. Count your blessings, not your bugs.",
+        "meta": "Gratitude"
+    },
+    {
+        "name": "aya sleep",
+        "arabic": "نَوْم",
+        "title": "Nawm",
+        "desc": "Sleep is the minor death. Allah takes your soul every night. Will He return it? Sleep is a sign of our vulnerability. We power down. We are not self-sustaining. Recite your Adhkar before sleep. It might be your last logout. Clean the session.",
+        "meta": "Sleep"
+    },
+    {
+        "name": "aya sound",
+        "arabic": "تَرْتِيل",
+        "title": "Tartil",
+        "desc": "The Quran is meant to be heard. 'Warattil il-Qurana tartila'. Recite it slowly, beautifully. The sound of the Quran has a healing frequency for the heart. Listen to the Quran. Let it overwrite the noise of the world.",
+        "meta": "Measured Recitation"
+    },
+    {
+        "name": "aya sunnah",
+        "arabic": "سُنَّة",
+        "title": "Sunnah",
+        "desc": "The Sunnah is the documentation of the Perfect Implementation. The Prophet ﷺ showed us how to live the theory of Quran. Without Sunnah, we are guessing. Revive a Sunnah. Siwak? Smile? Right foot first? Small deeds, massive love.",
+        "meta": "The Way"
+    },
+    {
+        "name": "aya tafsir",
+        "arabic": "تَفْسِير",
+        "title": "Tafsir",
+        "desc": "Tafsir comes from 'Fassara' - to explain or unveil. The Quran has layers. You can read the surface, or you can dive deep. Tafsir is the deep dive. It's analyzing the code to understand the logic. Don't just read the translation. Read the Tafsir. Understand the context (Asbab al-Nuzul).",
+        "meta": "Exegesis"
+    },
+    {
+        "name": "aya tasbih",
+        "arabic": "تَسْبِيح",
+        "title": "Tasbih",
+        "desc": "Tasbih (SubhanAllah) means to declare Allah perfect and far removed from any imperfection. It comes from a root meaning 'to float' or 'swim'. When you do Tasbih, you keep your heart floating above the drowning ocean of the Dunya. Keep your tongue moist with Tasbih. It's the lightest on the tongue, heaviest on the scales.",
+        "meta": "Glorification"
+    },
+    {
+        "name": "aya wudu",
+        "arabic": "وُضُوء",
+        "title": "Wudu",
+        "desc": "Wudu comes from 'Wada'ah' (brightness/beauty). It washes away sins. As the water drips, the minor sins drip away. It is the prerequisite for connection. Don't just wash your limbs; wash your heart. Prepare to meet the King.",
+        "meta": "Ablution"
+    },
+    {
+        "name": "aya zakat",
+        "arabic": "زَكَاة",
+        "title": "Zakah",
+        "desc": "Zakah means purification and growth. It seems like you are giving money away (-), but spiritually you are growing (+). It purifies your wealth from greed and the rights of the poor. Give. It doesn't decrease wealth. It blesses the remainder.",
+        "meta": "Purification"
+    }
+];
 
-        // Fetch commits from API
-        async function loadData() {
-            try {
-                const response = await fetch('/api/commits');
-                if (!response.ok) throw new Error('Network response was not ok');
-                const commits = await response.json();
-                renderData(commits);
-            } catch (e) {
-                console.log("Could not load commits, using demo data", e);
-                renderDemoData();
-            }
-        }
+        // Terminal Typewriter Logic
+        const terminalContent = document.getElementById('terminal-content');
+        const terminalSequence = [
+            { text: "$ aya init", class: "prompt" },
+            { text: "Initializing Niyyah (Intention)...", class: "text-dim", delay: 500 },
+            { text: "Checking Root... [Clean]", class: "text-gold", delay: 800 },
+            { text: "Loading Modules: [Sabr, Shukr, Ikhlas]", class: "text-dim", delay: 1200 },
+            { text: "System Ready.", class: "text-gold", delay: 1500 },
+            { text: "Bismillah.", class: "text-gold", style: "font-family: var(--font-arabic); font-size: 1.5rem; margin-top: 10px;", delay: 2000 }
+        ];
 
-        function renderDemoData() {
-            const demoCommits = [
-                { timestamp: new Date().toISOString(), message: "Smiled at a stranger", hash: "a1b2c3d" },
-                { timestamp: new Date(Date.now() - 86400000).toISOString(), message: "Prayed Fajr on time", hash: "e5f6g7h" },
-                { timestamp: new Date(Date.now() - 172800000).toISOString(), message: "Gave charity", hash: "i8j9k0l" },
-                { timestamp: new Date(Date.now() - 259200000).toISOString(), message: "Read Surah Kahf", hash: "m1n2o3p" },
-                { timestamp: new Date(Date.now() - 345600000).toISOString(), message: "Helped parents", hash: "q4r5s6t" },
-            ];
-            renderData(demoCommits);
-            
-            // Add a demo badge
-            const header = document.querySelector('header');
-            if(header) {
-                const badge = document.createElement('div');
-                badge.style.position = 'absolute';
-                badge.style.top = '0';
-                badge.style.left = '50%';
-                badge.style.transform = 'translateX(-50%)';
-                badge.style.background = 'var(--accent-gold)';
-                badge.style.color = '#000';
-                badge.style.padding = '0.2rem 1rem';
-                badge.style.fontSize = '0.7rem';
-                badge.style.fontWeight = 'bold';
-                badge.style.borderBottomLeftRadius = '4px';
-                badge.style.borderBottomRightRadius = '4px';
-                badge.textContent = 'DEMO MODE';
-                header.appendChild(badge);
-            }
-        }
-
-        function renderData(commits) {
-            // Update Sidebar Stats
-            const starCount = document.getElementById('star-count');
-            if(starCount) starCount.textContent = commits.length;
-            
-            const forkCount = document.getElementById('fork-count');
-            if(forkCount) forkCount.textContent = "0"; 
-
-            if (commits.length > 0) {
-                const latest = commits[commits.length - 1];
-                document.getElementById('latest-commit-msg').textContent = latest.message;
-                document.getElementById('latest-commit-time').textContent = timeAgo(latest.timestamp);
-                document.getElementById('latest-commit-hash').textContent = latest.hash;
-            } else {
-                 document.getElementById('latest-commit-msg').textContent = "No deeds recorded yet";
-                 document.getElementById('latest-commit-hash').textContent = "";
-            }
-
-            renderFileList(commits);
-            renderGraph(commits);
-            renderLanguages(commits);
-        }
-
-        function renderFileList(commits) {
-            const list = document.getElementById('repo-file-list');
-            if(!list) return;
-            list.innerHTML = '';
-            
-            // Show last 7 deeds as "files"
-            // If no deeds, show a placeholder or the "Core" structure
-            
-            let displayCommits = [];
-            if (commits.length === 0) {
-                 // Metaphorical default files if empty
-                 displayCommits = [
-                    { message: "Foundation of Tawheed", timestamp: new Date().toISOString(), isStatic: true, path: "core/beliefs" },
-                    { message: "Intention set", timestamp: new Date().toISOString(), isStatic: true, path: "niyyah.config.json" }
-                 ];
-            } else {
-                displayCommits = [...commits].reverse().slice(0, 10);
-            }
-            
-            displayCommits.forEach(c => {
-                const li = document.createElement('li');
-                li.className = 'file-item';
-                
-                // If it's a real commit, generate a path
-                let path = c.path;
-                let iconColor = "#54aeff"; // folder blue
-                let isFolder = false;
-
-                if (!path) {
-                    // Generate pseudo-path based on content
-                    const msg = c.message.toLowerCase();
-                    if (msg.includes("pray") || msg.includes("salah") || msg.includes("fajr")) {
-                        path = `src/worship/${c.message.replace(/\s+/g, '_').substring(0,15)}.ts`;
-                        iconColor = "#2ea043"; // green
-                    } else if (msg.includes("read") || msg.includes("quran") || msg.includes("study")) {
-                        path = `src/ilm/${c.message.replace(/\s+/g, '_').substring(0,15)}.md`;
-                        iconColor = "#d4af37"; // gold
-                    } else if (msg.includes("help") || msg.includes("charity") || msg.includes("give")) {
-                         path = `src/sadaqah/${c.message.replace(/\s+/g, '_').substring(0,15)}.tsx`;
-                         iconColor = "#db6d28"; // orange
+        async function typeWriter(text, element, speed = 30) {
+            return new Promise(resolve => {
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
                     } else {
-                        path = `src/deeds/${c.message.replace(/\s+/g, '_').substring(0,15)}.ts`;
+                        resolve();
                     }
                 }
-
-                const timeDisplay = c.isStatic ? "Eternal" : timeAgo(c.timestamp);
-                
-                // SVG Icon
-                const svgIcon = `<svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>`;
-
-                li.innerHTML = `
-                    <span class="file-icon" style="color: ${iconColor}">
-                        ${svgIcon}
-                    </span>
-                    <a href="#" class="file-name" style="color: var(--text-primary); text-decoration: none;">${path}</a>
-                    <span class="file-desc">${c.message}</span>
-                    <span class="file-time">${timeDisplay}</span>
-                `;
-                list.appendChild(li);
+                type();
             });
-
-            // Always add README.md
-            const readme = document.createElement('li');
-            readme.className = 'file-item';
-            readme.innerHTML = `
-                <span class="file-icon">
-                    <svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>
-                </span>
-                <a href="#" class="file-name">README.md</a>
-                <span class="file-desc">Initial commit</span>
-                <span class="file-time">Creation</span>
-            `;
-            list.appendChild(readme);
         }
 
-        function renderLanguages(commits) {
-            const counts = { Tawakkul: 0, Sabr: 0, Jihad: 0, Ibadah: 0, Ilm: 0, Sadaqah: 0, Other: 0 };
-            
-            commits.forEach(c => {
-                const msg = c.message.toLowerCase();
-                if (msg.includes("trust") || msg.includes("allah") || msg.includes("plan")) counts.Tawakkul++;
-                else if (msg.includes("patience") || msg.includes("wait") || msg.includes("sabr") || msg.includes("calm") || msg.includes("anger")) counts.Sabr++;
-                else if (msg.includes("struggle") || msg.includes("fight") || msg.includes("hard") || msg.includes("nafs") || msg.includes("sin")) counts.Jihad++;
-                else if (msg.includes("pray") || msg.includes("salah") || msg.includes("namaz") || msg.includes("fajr") || msg.includes("dhikr") || msg.includes("fast") || msg.includes("sunnah")) counts.Ibadah++;
-                else if (msg.includes("read") || msg.includes("learn") || msg.includes("study") || msg.includes("book") || msg.includes("quran") || msg.includes("listen")) counts.Ilm++;
-                else if (msg.includes("give") || msg.includes("help") || msg.includes("money") || msg.includes("smile") || msg.includes("feed") || msg.includes("donate") || msg.includes("mother") || msg.includes("father") || msg.includes("family") || msg.includes("call") || msg.includes("visit")) counts.Sadaqah++;
-                else counts.Other++;
-            });
-
-            const total = commits.length || 1; // avoid divide by zero
-            
-            // Convert to array and sort
-            const sorted = Object.entries(counts)
-                .filter(([_, count]) => count > 0)
-                .sort((a, b) => b[1] - a[1]);
-            
-            // If empty, show default
-            if (sorted.length === 0) {
-                 sorted.push(["Niyyah", 1]);
+        async function runTerminal() {
+            for (const line of terminalSequence) {
+                const div = document.createElement('div');
+                if (line.class) div.className = line.class;
+                if (line.style) div.style = line.style;
+                terminalContent.appendChild(div);
+                
+                if (line.text.startsWith("$")) {
+                    await typeWriter(line.text, div);
+                } else {
+                    div.innerHTML = line.text; // Instant render for output lines
+                }
+                
+                if (line.delay) await new Promise(r => setTimeout(r, line.delay));
             }
-
-            const bar = document.getElementById('lang-bar');
-            const list = document.getElementById('lang-list');
-            if(bar) bar.innerHTML = '';
-            if(list) list.innerHTML = '';
-
-            const colors = {
-                Tawakkul: '#d4af37', // Gold
-                Sabr: '#2ea043', // Green
-                Jihad: '#da3633', // Red
-                Ibadah: '#a371f7', // Purple
-                Ilm: '#54aeff', // Blue
-                Sadaqah: '#db6d28', // Orange
-                Other: '#8b949e', // Grey
-                Niyyah: '#ffffff'
-            };
-
-            sorted.forEach(([lang, count]) => {
-                const percent = ((count / total) * 100).toFixed(1);
-                
-                // Bar segment
-                const segment = document.createElement('div');
-                segment.className = 'lang-segment';
-                segment.style.width = `${percent}%`;
-                segment.style.background = colors[lang] || colors.Other;
-                bar.appendChild(segment);
-                
-                // List item
-                const li = document.createElement('li');
-                li.style.fontSize = '0.8rem';
-                li.style.color = 'var(--text-secondary)';
-                li.innerHTML = `<span class="lang-dot" style="background: ${colors[lang] || colors.Other};"></span>${lang} ${percent}%`;
-                list.appendChild(li);
-            });
+            // Add cursor at the end
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            terminalContent.appendChild(cursor);
         }
 
-        function renderGraph(commits) {
-            const grid = document.getElementById('contribution-grid');
+        // Render Grid
+        const grid = document.getElementById('command-grid');
+        let allCommands = commands;
+
+        // Intersection Observer for Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        function renderCommands(filter = 'all') {
             grid.innerHTML = '';
             
-            const activity = {};
-            commits.forEach(c => {
-                const date = c.timestamp.split('T')[0];
-                activity[date] = (activity[date] || 0) + 1;
+            const filtered = filter === 'all' 
+                ? allCommands 
+                : allCommands.filter(cmd => cmd.meta.includes(filter));
+
+            filtered.forEach((cmd, index) => {
+                const card = document.createElement('div');
+                card.className = 'cmd-card';
+                // Reset animation
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                // Stagger based on index in filtered view
+                card.style.transitionDelay = `${index * 50}ms`;
+
+                card.innerHTML = `
+                    <span class="watermark-arabic">${cmd.arabic}</span>
+                    <div class="cmd-content">
+                        <div class="cmd-header">
+                            <span class="cmd-name">$ ${cmd.name}</span>
+                            <button class="copy-btn-mini" onclick="copyCommand(this, '${cmd.name}')" title="Copy command">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <h3 class="cmd-title">${cmd.title}</h3>
+                        <p class="cmd-desc">${cmd.desc}</p>
+                        <span class="cmd-meta">${cmd.meta}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                // Observe for scroll reveal
+                observer.observe(card);
             });
-
-            // Get start date (365 days ago)
-            const today = new Date();
-            const startDate = new Date();
-            startDate.setDate(today.getDate() - 365);
-
-            for (let i = 0; i < 371; i++) {
-                const currentDate = new Date(startDate);
-                currentDate.setDate(startDate.getDate() + i);
-                const dateStr = currentDate.toISOString().split('T')[0];
-                
-                const div = document.createElement('div');
-                const count = activity[dateStr] || 0;
-                
-                let level = 'level-0';
-                if (count > 0) level = 'level-1';
-                if (count > 2) level = 'level-2';
-                if (count > 4) level = 'level-3';
-                if (count > 6) level = 'level-4';
-                
-                div.className = `graph-day ${level}`;
-                div.title = `${count} deeds on ${dateStr}`;
-                grid.appendChild(div);
-            }
+            
+            // Trigger reflow for animation
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.cmd-card').forEach(card => card.classList.add('reveal'));
+            });
         }
+        
+        // Initial Render
+        renderCommands();
 
-        loadData();
+        // Filter Logic
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // UI update
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Logic
+                const filter = e.target.getAttribute('data-filter');
+                renderCommands(filter);
+            });
+        });
+
+        // Start
+        window.onload = () => {
+            runTerminal();
+        };
+
+        // Copy Install Command
+        function copyInstall() {
+            const cmd = "npm install -g islamic-cli";
+            navigator.clipboard.writeText(cmd).then(() => {
+                const feedback = document.getElementById('feedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+        // Copy Individual Command
+        function copyCommand(btn, cmdName) {
+            // Prevent card hover effect when clicking button
+            event.stopPropagation();
+            
+            navigator.clipboard.writeText(cmdName).then(() => {
+                const originalContent = btn.innerHTML;
+                
+                // Switch to checkmark
+                btn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                `;
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>

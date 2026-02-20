@@ -2,7 +2,7 @@
 
 > "When a person dies, his deeds come to an end except for three: Sadaqah Jariyah (a continuous charity), or knowledge from which benefit is gained, or a righteous child who prays for him." (Muslim)
 
-Assalamu Alaikum wa Rahmatullah! 👋
+Assalamu Alaikum wa Rahmatullah wa Barakatuh! 👋
 
 We are incredibly humbled that you want to contribute to `aya`. Think of every line of code you write here as a form of **Sadaqah Jariyah**—knowledge that will benefit others long after we are gone.
 

@@ -41,6 +41,7 @@ import { shukrCommand } from './commands/shukr';
 import { fridayCommand } from './commands/friday';
 import { adabCommand } from './commands/adab';
 import { seekCommand } from './commands/seek';
+import { repoCommand } from './commands/repo';
 
 const program = new Command();
 
@@ -70,7 +71,7 @@ const commands = [
   hijriCommand, zakatCommand, tasbihCommand, prayersCommand, namesCommand,
   duaCommand, fastCommand, sunnahCommand, sleepCommand, anatomyCommand,
   journeyCommand, natureCommand, wuduCommand, investCommand, sabrCommand,
-  shukrCommand, fridayCommand, adabCommand, seekCommand
+  shukrCommand, fridayCommand, adabCommand, seekCommand, repoCommand
 ];
 
 commands.forEach(cmd => program.addCommand(cmd));

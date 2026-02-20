@@ -115,6 +115,9 @@
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 2rem;
+        }
+
+        .code-layout {
             display: grid;
             grid-template-columns: 1fr 300px;
             gap: 2rem;
@@ -262,6 +265,47 @@
         .level-3 { background: #26a641; }
         .level-4 { background: #39d353; }
 
+        /* Tab Content Switching */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Issue/PR List Styles */
+        .issue-list { list-style: none; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+        .issue-item {
+            padding: 1rem;
+            background: #0d1117;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .issue-item:last-child { border-bottom: none; }
+        .issue-status { color: var(--accent-green); font-size: 0.9rem; margin-top: 2px; }
+        .issue-status.open { color: var(--accent-green); }
+        .issue-status.closed { color: var(--accent-red); }
+        .issue-title { font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 0.25rem; }
+        .issue-meta { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1f6feb;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 100;
+            font-family: var(--font-ui);
+        }
+
         @media (max-width: 768px) {
             main { grid-template-columns: 1fr; }
             .file-desc { display: none; }
@@ -291,33 +335,34 @@
     </header>
 
     <div class="repo-tabs">
-        <a href="#" class="tab-item active">
+        <a href="#" class="tab-item active" onclick="switchTab(event, 'code')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M4.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 2.75C3.5 2.06 4.06 1.5 4.75 1.5h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M4.75 9.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM3.5 9.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path><path fill-rule="evenodd" d="M9.75 2.5a.25.25 0 00-.25.25v2.5a.25.25 0 00.25.25h2.5a.25.25 0 00.25-.25v-2.5a.25.25 0 00-.25-.25h-2.5zM8.5 2.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v2.5c0 .69-.56 1.25-1.25 1.25h-2.5c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
             Deeds (Code)
         </a>
-        <a href="#" class="tab-item">
+        <a href="#" class="tab-item" onclick="switchTab(event, 'issues')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
             Istighfar (Issues) <span class="count-badge">3</span>
         </a>
-        <a href="#" class="tab-item">
+        <a href="#" class="tab-item" onclick="switchTab(event, 'pulls')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
             Duas (Pull Requests) <span class="count-badge">∞</span>
         </a>
-        <a href="#" class="tab-item">
+        <a href="#" class="tab-item" onclick="switchTab(event, 'actions')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z"></path></svg>
             Actions (Rituals)
         </a>
-        <a href="#" class="tab-item">
+        <a href="#" class="tab-item" onclick="switchTab(event, 'projects')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM1.5 10h13v1.5h-13V10zm13-3h-13v1.5h13V7z"></path></svg>
             Projects (Goals)
         </a>
-        <a href="#" class="tab-item">
+        <a href="#" class="tab-item" onclick="switchTab(event, 'wiki')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h1a.5.5 0 00.5-.5V3a.5.5 0 00-.5-.5H2zM3 6H2v1h1V6zm0 3H2v1h1V9zm0 3H2v1h1v-1zm1.5-6h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5zm.5 2.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-11zM16 12.5a.5.5 0 00-.5-.5h-11a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1z"></path></svg>
             Wiki (Ilm)
         </a>
     </div>
 
     <main>
+        <div id="code" class="tab-content active code-layout">
         <!-- Main Repo Content -->
         <div class="content-col">
             
@@ -410,9 +455,86 @@
                 </ul>
             </div>
         </div>
+        </div> <!-- End of code tab -->
+
+        <!-- Other Tabs -->
+        <div id="issues" class="tab-content">
+            <div style="max-width: 800px; margin: 0 auto; padding-top: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="font-family: var(--font-cinematic); color: var(--accent-gold);">Istighfar (Issues)</h2>
+                    <button onclick="createNewIssue()" style="padding: 0.5rem 1rem; background: var(--accent-green); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        New Issue
+                    </button>
+                </div>
+                
+                <div class="issue-list" id="issue-list-container">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        Loading sins...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pulls" class="tab-content">
+             <div style="max-width: 800px; margin: 0 auto; padding-top: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="font-family: var(--font-cinematic); color: var(--accent-gold);">Duas (Pull Requests)</h2>
+                    <button onclick="createNewPull()" style="padding: 0.5rem 1rem; background: var(--accent-green); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        New Prayer Request
+                    </button>
+                </div>
+                
+                <div class="issue-list" id="pull-list-container">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        Loading duas...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="actions" class="tab-content">
+            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+        </div>
+        <div id="projects" class="tab-content">
+            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+        </div>
+        <div id="wiki" class="tab-content">
+            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+        </div>
+        
+        <div id="toast" class="toast"></div>
     </main>
 
     <script>
+        // Tab Switching Logic
+        function switchTab(event, tabId) {
+            event.preventDefault();
+            
+            // Update Tab Links
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Update Tab Content
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            const activeContent = document.getElementById(tabId);
+            
+            if(activeContent) {
+                activeContent.classList.add('active');
+            } else {
+                showToast(`The ${tabId} section is currently under construction.`);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if(!toast) return;
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
         // Utility: Format Date
         function timeAgo(dateString) {
             const date = new Date(dateString);
@@ -439,6 +561,117 @@
                 console.log("Could not load commits, using demo data", e);
                 renderDemoData();
             }
+
+            // Load Issues
+            loadIssues();
+            
+            // Load Pulls
+            loadPulls();
+        }
+        
+        async function loadIssues() {
+            const container = document.getElementById('issue-list-container');
+            try {
+                const res = await fetch('/api/issues');
+                if(!res.ok) throw new Error();
+                const issues = await res.json();
+                
+                if(issues.length === 0) {
+                     container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">No open sins recorded. Al-Hamdulillah.</div>`;
+                     return;
+                }
+                
+                let html = '<ul class="issue-list">';
+                issues.reverse().forEach(issue => {
+                     html += `
+                        <li class="issue-item">
+                            <div style="padding-top: 4px;">
+                                <svg height="16" viewBox="0 0 16 16" width="16" style="color: var(--accent-red);"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
+                            </div>
+                            <div>
+                                <span class="issue-title">${issue.title}</span>
+                                <div class="issue-meta">
+                                    #${issue.id} opened ${timeAgo(issue.timestamp)} by ServantOfAllah
+                                </div>
+                            </div>
+                        </li>
+                     `;
+                });
+                html += '</ul>';
+                container.innerHTML = html;
+                
+            } catch (e) {
+                container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">Failed to load issues.</div>`;
+            }
+        }
+
+        async function loadPulls() {
+             const container = document.getElementById('pull-list-container');
+            try {
+                const res = await fetch('/api/pulls');
+                if(!res.ok) throw new Error();
+                const pulls = await res.json();
+                
+                if(pulls.length === 0) {
+                     container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">No pending supplications.</div>`;
+                     return;
+                }
+                
+                let html = '<ul class="issue-list">';
+                pulls.reverse().forEach(pull => {
+                     html += `
+                        <li class="issue-item">
+                            <div style="padding-top: 4px;">
+                                <svg height="16" viewBox="0 0 16 16" width="16" style="color: var(--accent-green);"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
+                            </div>
+                            <div>
+                                <span class="issue-title">${pull.title}</span>
+                                <div class="issue-meta">
+                                    #${pull.id} opened ${timeAgo(pull.timestamp)} by ServantOfAllah • Pending Review
+                                </div>
+                            </div>
+                        </li>
+                     `;
+                });
+                html += '</ul>';
+                container.innerHTML = html;
+            } catch (e) {
+                container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">Failed to load duas.</div>`;
+            }
+        }
+        
+        async function createNewIssue() {
+            const title = prompt("Confess a mistake (Log Issue):");
+            if(!title) return;
+            
+            try {
+                const res = await fetch('/api/issues', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title })
+                });
+                if(res.ok) {
+                    showToast("Issue logged. May Allah forgive you.");
+                    loadIssues();
+                }
+            } catch(e) { showToast("Failed to log issue."); }
+        }
+
+        async function createNewPull() {
+             const title = prompt("What is your request? (Dua):");
+            if(!title) return;
+            
+            try {
+                const res = await fetch('/api/pulls', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title })
+                });
+                if(res.ok) {
+                    showToast("Dua submitted. Trust in His plan.");
+                    loadPulls();
+                }
+            } catch(e) { showToast("Failed to submit dua."); }
         }
 
         function renderDemoData() {

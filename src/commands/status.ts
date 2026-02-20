@@ -42,6 +42,7 @@ export const statusCommand = new Command('status')
       const now = new Date();
       let nextPrayer = null;
       let nextPrayerTime: Date | null = null;
+      let missedPrayersCount = 0;
       
       // Find next prayer logic...
       for (const name of prayerNames) {
@@ -51,9 +52,12 @@ export const statusCommand = new Command('status')
         prayerDate.setHours(hours, minutes, 0, 0);
 
         if (prayerDate > now) {
-          nextPrayer = name;
-          nextPrayerTime = prayerDate;
-          break;
+          if (!nextPrayer) {
+            nextPrayer = name;
+            nextPrayerTime = prayerDate;
+          }
+        } else {
+          missedPrayersCount++;
         }
       }
 
@@ -85,8 +89,11 @@ export const statusCommand = new Command('status')
       );
 
       console.log(chalk.bold.blue('📡 Connection Status:'));
-      console.log(` • Branch: ${chalk.green('dunya')} (tracking remote: ${chalk.cyan('akhira')})`);
-      console.log(` • Latency: ${chalk.green('0ms')} (Direct Connection Available)`);
+      console.log(` Your heart is currently on branch ${chalk.green("'dunya'")}.`);
+      if (missedPrayersCount > 0) {
+        console.log(chalk.yellow(` Warning: ${missedPrayersCount} prayer times missed.`));
+        console.log(chalk.cyan(` Suggestion: run 'aya wudu' to refresh session.`));
+      }
       console.log('');
 
       if (nextPrayer && nextPrayerTime) {

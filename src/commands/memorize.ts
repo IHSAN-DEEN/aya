@@ -7,7 +7,7 @@ import path from 'path';
 import { vocabList, Vocab } from '../data/vocab';
 import { printCommandHeader } from '../utils/printer';
 
-const MEMORIZE_FILE = path.join(os.homedir(), '.islamic-cli', 'memorize.json');
+const MEMORIZE_FILE = path.join(os.homedir(), '.aya', 'memorize.json');
 
 interface MemorizeStats {
   streak: number;

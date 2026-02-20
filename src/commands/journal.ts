@@ -7,7 +7,7 @@ import path from 'path';
 import boxen from 'boxen';
 import { printCommandHeader } from '../utils/printer';
 
-const JOURNAL_FILE = path.join(os.homedir(), '.islamic-cli', 'journal.json');
+const JOURNAL_FILE = path.join(os.homedir(), '.aya', 'journal.json');
 
 interface JournalEntry {
   date: string;

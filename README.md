@@ -44,7 +44,7 @@ You want to get started? Bismillah. It’s simple.
 
 ```bash
 # 1. Install it globally (make it part of your system)
-npm install -g islamic-cli
+npm install -g @ihsandeen/aya
 
 # 2. Set your intention (Niyyah) for the session
 aya init
@@ -129,7 +129,7 @@ Listen, this project isn't about me. It's about *us*. It's a **Sadaqah Jariyah**
 
 **Want to earn that reward?** 👇
 
-1.  **Clone it**: `git clone https://github.com/shajedulkarim/islamic-cli.git`
+1.  **Clone it**: `git clone https://github.com/ihsandeen/aya.git`
 2.  **Install it**: `npm install`
 3.  **Build it**: `npm run build`
 4.  **Link it**: `npm link`

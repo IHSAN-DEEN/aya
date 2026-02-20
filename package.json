@@ -1,5 +1,5 @@
 {
-  "name": "islamic-cli",
+  "name": "@ihsandeen/aya",
   "version": "1.0.0",
   "description": "A CLI tool for the mindful Muslim developer. Track your spiritual commits, manage your sins (issues), and push good deeds to the akhira.",
   "main": "dist/index.js",
@@ -8,17 +8,19 @@
   },
   "scripts": {
     "build": "tsc",
+    "dev": "ts-node src/index.ts",
     "start": "ts-node src/index.ts",
     "site": "ts-node src/server.ts",
+    "deploy": "vercel --prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shajedulkarim/islamic-cli.git"
+    "url": "git+https://github.com/ihsandeen/aya.git"
   },
-  "homepage": "https://shajedulkarim.github.io/islamic-cli",
+  "homepage": "https://ihsandeen.github.io/aya",
   "bugs": {
-    "url": "https://github.com/shajedulkarim/islamic-cli/issues"
+    "url": "https://github.com/ihsandeen/aya/issues"
   },
   "keywords": [
     "islam",

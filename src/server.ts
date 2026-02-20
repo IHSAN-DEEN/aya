@@ -46,6 +46,8 @@ export const startServer = (port = 0): Promise<number> => {
                 serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
             } else if (req.url === '/repo') {
                 serveFile(res, path.join(PUBLIC_DIR, 'repo.html'));
+            } else if (req.url === '/hero') {
+                serveFile(res, path.join(PUBLIC_DIR, 'hero.html'));
             } else if (req.url === '/api/commits') {
                 // API Endpoint: Serve commits log as JSON using the Logger utility
                 try {
@@ -119,6 +121,8 @@ if (require.main === module) {
         console.log(chalk.green.bold(`\n  🌙 aya Landing Page is running!`));
         console.log(chalk.white(`  Open your Book of Deeds:`));
         console.log(chalk.cyan.bold(`  http://localhost:${port}/repo`));
+        console.log(chalk.white(`  Open the Hero Section:`));
+        console.log(chalk.cyan.bold(`  http://localhost:${port}/hero`));
         console.log(chalk.gray(`\n  Press Ctrl+C to stop.`));
     });
 }

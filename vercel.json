@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/hero", "destination": "/public/hero.html" },
+    { "source": "/repo", "destination": "/public/repo.html" },
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ]
+}

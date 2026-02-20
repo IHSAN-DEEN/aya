@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>aya | The Believer's Interface</title>
+    <meta name="description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ihsandeen.github.io/aya/">
+    <meta property="og:title" content="aya | The Believer's Interface">
+    <meta property="og:description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    <meta property="og:image" content="https://ihsandeen.github.io/aya/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ihsandeen.github.io/aya/">
+    <meta property="twitter:title" content="aya | The Believer's Interface">
+    <meta property="twitter:description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    <meta property="twitter:image" content="https://ihsandeen.github.io/aya/og-image.png">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -532,17 +549,13 @@
 
     <header class="container">
         <h1 class="hero-title">The Believer's <span class="text-gold">Interface</span></h1>
-        <div class="hero-subtitle">
-            A CLI tool for the mindful Muslim developer.<br>
-            Track your spiritual commits, manage your sins (issues),<br>
-            and push good deeds to the Akhira.
-        </div>
+        <p class="hero-subtitle">"Every line of code is a witness either for you or against you before Allah."</p>
         
         <div class="install-container" onclick="copyInstall()">
             <div class="copy-feedback" id="feedback">Copied!</div>
             <div class="install-bar">
                 <span class="prompt">$</span>
-                <span class="cmd-text">npm install -g islamic-cli</span>
+                <span class="cmd-text">npm install -g @ihsandeen/aya</span>
                 <svg class="copy-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -550,13 +563,8 @@
             </div>
         </div>
 
-        <div class="cta-container">
-            <a href="https://github.com/shajedulkarim/islamic-cli" class="cta-button">
-                View on GitHub
-            </a>
-            <a href="repo.html" class="cta-button" style="background: transparent; border: 1px solid var(--border);">
-                Open Book of Deeds
-            </a>
+        <div>
+            <a href="/repo" class="repo-link-btn">Open Book of Deeds</a>
         </div>
 
         <div class="terminal-window" id="terminal">
@@ -566,8 +574,8 @@
 
     <section class="manifesto container">
         <p>In a world obsessed with <span class="highlight">speed</span>, we have lost the art of <span class="highlight">stillness</span>.</p>
-        <p>We build systems to manage data, but we have no system to manage our <span class="highlight">hearts</span>.</p>
-        <p><strong>aya</strong> is not just a CLI. It is a reminder. A digital companion for the spiritual journey.</p>
+        <p>We build systems to manage data, but we have no system to manage our <span class="highlight">hearts</span> for the sake of Allah.</p>
+        <p><strong>aya</strong> is not just a CLI. It is a reminder. A digital companion for the Muslim's spiritual journey.</p>
         <p style="font-size: 1.2rem; margin-top: 2rem; color: var(--gold);">Use it to align your workflow with your purpose.</p>
     </section>
 
@@ -594,7 +602,7 @@
     <footer>
         <p>Built with ❤️ by <a href="https://ihsandeen.com/" target="_blank" class="ihsan-link">IHSAN</a></p>
         <p style="margin-top: 0.5rem; opacity: 0.8;">Open source for the Ummah.</p>
-        <p class="font-mono" style="margin-top: 0.5rem; opacity: 0.5;">v1.0.0 • 1446 AH</p>
+        <p class="font-mono" style="margin-top: 0.5rem; opacity: 0.5;">v1.0.0 • 1447 AH</p>
     </footer>
 
     <script>
@@ -1012,7 +1020,7 @@
 
         // Copy Install Command
         function copyInstall() {
-            const cmd = "npm install -g islamic-cli";
+            const cmd = "npm install -g @ihsandeen/aya";
             navigator.clipboard.writeText(cmd).then(() => {
                 const feedback = document.getElementById('feedback');
                 feedback.classList.add('show');

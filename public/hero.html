@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aya | The Believer's Interface</title>
+    <meta name="description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ihsandeen.github.io/aya/">
+    <meta property="og:title" content="aya | The Believer's Interface">
+    <meta property="og:description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    <meta property="og:image" content="https://ihsandeen.github.io/aya/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ihsandeen.github.io/aya/">
+    <meta property="twitter:title" content="aya | The Believer's Interface">
+    <meta property="twitter:description" content="We optimize our code for performance, but what about our hearts? aya is a CLI companion that turns your terminal into a reminder of the Divine. Track prayers, audit your intentions, and push deeds that last forever. Because the most important deployment is the one to the Akhira.">
+    <meta property="twitter:image" content="https://ihsandeen.github.io/aya/og-image.png">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #d4af37; /* Minimal Classy Gold */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Subtle Noise Overlay for Texture */
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Ambient Blur Effects */
+        .ambient-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+            animation: pulse-glow 10s infinite alternate ease-in-out;
+        }
+
+        .glow-1 {
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -30%;
+            left: -20%;
+        }
+
+        .glow-2 {
+            background: radial-gradient(circle, rgba(100, 80, 20, 0.1) 0%, rgba(0,0,0,0) 70%);
+            bottom: -30%;
+            right: -20%;
+            animation-delay: 2s;
+        }
+
+        .glow-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, rgba(0,0,0,0) 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(60px);
+            animation-delay: 5s;
+        }
+
+        .glow-4 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(184, 134, 11, 0.08) 0%, rgba(0,0,0,0) 70%); /* Dark Goldenrod */
+            top: 10%;
+            right: -10%;
+            animation-delay: 1s;
+            animation-duration: 15s;
+        }
+
+        .glow-5 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 223, 0, 0.03) 0%, rgba(0,0,0,0) 70%); /* Bright Gold */
+            bottom: 10%;
+            left: 10%;
+            animation-delay: 3s;
+            animation-duration: 12s;
+        }
+
+        .glow-6 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.1) 0%, rgba(0,0,0,0) 70%); /* Goldenrod */
+            top: 60%;
+            right: 20%;
+            animation-delay: 7s;
+            animation-duration: 18s;
+        }
+
+        .glow-white-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0,0,0,0) 70%); /* Subtle White */
+            top: -20%;
+            left: 30%;
+            animation-delay: 4s;
+            animation-duration: 20s;
+            filter: blur(80px);
+        }
+
+        .glow-white-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(200, 200, 255, 0.02) 0%, rgba(0,0,0,0) 70%); /* Cool White */
+            bottom: 20%;
+            right: 40%;
+            animation-delay: 9s;
+            animation-duration: 25s;
+            filter: blur(70px);
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 4rem;
+            gap: 4rem;
+        }
+
+        .content {
+            flex: 1;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 300; /* More minimal weight */
+            letter-spacing: -0.05em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .features {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .feature-icon {
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .feature-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            max-width: 150px;
+            font-weight: 300;
+        }
+
+        .terminal-mockup {
+            flex: 1;
+            background: #050505;
+            border-radius: 4px; /* Minimal radius */
+            box-shadow: 0 0 0 1px #222, 0 30px 60px rgba(0,0,0,0.8);
+            border: none;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            max-width: 500px;
+        }
+
+        .terminal-mockup:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .terminal-header {
+            background: #0a0a0a;
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+        }
+        /* Standard Window Colors */
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .terminal-body {
+            padding: 1.5rem;
+            color: #a3a3a3;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .prompt { color: #555; }
+        .cmd { color: #fff; }
+        .success { color: var(--accent); }
+        .info { color: #555; }
+        .value { color: #fff; }
+
+        .footer {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        code.install-cmd {
+            background: rgba(255,255,255,0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 2px;
+            color: var(--accent);
+            font-family: monospace;
+            margin-left: 0.5rem;
+            border: 1px solid #222;
+            text-transform: none; /* Ensure command is lowercase */
+        }
+
+        /* Moon/Star decoration */
+        .decoration {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 150px;
+            height: 150px;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.3));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+            .content { text-align: center; }
+            .features { justify-content: center; }
+            .feature-item { align-items: center; }
+            .feature-desc { text-align: center; }
+            .terminal-mockup { width: 100%; transform: none; margin-top: 2rem; }
+            h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise"></div>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+    <div class="ambient-glow glow-4"></div>
+    <div class="ambient-glow glow-5"></div>
+    <div class="ambient-glow glow-6"></div>
+    <div class="ambient-glow glow-white-1"></div>
+    <div class="ambient-glow glow-white-2"></div>
+
+    <div class="container">
+        <div class="content">
+            <h1>aya</h1>
+            <p class="subtitle">The CLI for the Mindful Muslim</p>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">01</div>
+                    <div class="feature-title">Status</div>
+                    <div class="feature-desc">Is your heart connected to Allah?</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">02</div>
+                    <div class="feature-title">Commit</div>
+                    <div class="feature-desc">Make your deeds witness for you on Judgment Day.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">03</div>
+                    <div class="feature-title">Push</div>
+                    <div class="feature-desc">Transfer your deeds to your Book with Allah.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="terminal-mockup">
+            <div class="terminal-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="terminal-body">
+                <div><span class="prompt">$</span> <span class="cmd">aya status</span></div>
+                <div style="margin-top: 1rem">
+                    <span class="success">+</span> Location: <span class="value">Mecca, SA</span><br>
+                    <span class="success">+</span> Date: <span class="value">20 Feb 2026</span><br>
+                    <span class="success">+</span> Hijri: <span class="value">03 Ramadan 1447</span><br>
+                    <span class="success">+</span> Heart: <span class="value">Connected to Allah</span>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid #222; border-radius: 2px;">
+                    <span class="info">NEXT PRAYER</span><br>
+                    <span class="value" style="font-size: 1.2em; font-weight: bold;">ASR</span> <span class="info" style="margin-left: 1rem;">01:45:30</span>
+                </div>
+                <div style="margin-top: 1.5rem">
+                    <span class="prompt">$</span> <span class="cmd">_</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Open Source | MIT License | <code class="install-cmd">npm install -g @ihsandeen/aya</code>
+    </div>
+
+</body>
+</html>

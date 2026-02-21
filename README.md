@@ -1,3 +1,5 @@
+![aya preview](./public/og-image.png)
+
 # aya
 
 > "And We have fastened every man's deeds to his neck, and on the Day of Resurrection, We shall bring out for him a book which he will find wide open." (17:13)
@@ -71,6 +73,8 @@ You see, the life of a believer is a constant cycle. It's not a straight line. W
 | `aya repo` | **Kitab (Book of Deeds)**<br>Imagine if you could see your Book of Deeds right now. This command opens a UI to visualize your spiritual contributions. It's eye-opening. |
 
 ---
+
+![aya preview](public/believers-interface-preview.jpg)
 
 ## 🛠️ The Toolkit (Equip Yourself)
 

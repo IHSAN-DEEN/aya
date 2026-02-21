@@ -74,6 +74,31 @@ You see, the life of a believer is a constant cycle. It's not a straight line. W
 
 ---
 
+## 🌙 The Nuance (Ihsan in the Details)
+
+We didn't just build a CLI. We built it with **Ihsan** (Excellence). Because the Ummah deserves tools that are calculated, precise, and respectful of their reality.
+
+### 1. The "Missing" Void (Offline Capability)
+You’re on a flight. You’re in a remote village. You have no signal. Does your connection to Allah stop? No.
+*   **Offline Prayers**: We cache your prayer times for the entire month. Once you fetch them, you're set. No internet? No problem.
+*   **Hijri Date**: Even the lunar calendar works offline now. We use your cached prayer data to calculate the Hijri date locally.
+
+### 2. The "Partial" Reality (Completed)
+We found gaps, and we filled them.
+*   **Adhkar Expansion**: It was limited. Now it’s expansive. We added **Travel Adhkar** (Safar) and **Prayer Adhkar** (Salah). We included the full Arabic text, transliteration, and translation for heavy-hitters like *Ayat al-Kursi* and *Sayyidul Istighfar*.
+*   **Recite Caching**: Why download the same Surah twice? That’s *Israaf* (waste). We implemented smart caching. We check if you have the file, validate its size, and only download if necessary. We respect your bandwidth.
+
+### 3. Grace in Mistakes (Typo Handling)
+*   **Fuzzy Matching**: You type `aya memorize al fatiha`. The system expects `Al-Fatiha`. In the past, it would reject you. But Allah is Merciful with our stumbling. So we added the **Levenshtein Distance** algorithm. It understands your intent even if your spelling isn't perfect. It accepts your effort.
+
+### 4. Respecting Differences (Madhab)
+*   **Asr Calculation**: The Ummah is diverse. We respect that. You can now select your **Madhab** (Standard or Hanafi) in `aya init`. The Asr time will adjust accordingly. We don't force a single view; we accommodate the richness of our tradition.
+
+### 5. Continuity of Deeds (Cross-Device)
+*   **Export/Import**: You get a new laptop. You shouldn't lose your memorization progress. Your *Hifz* is precious. We added `export` and `import` commands so your spiritual data moves with you.
+
+---
+
 ![aya preview2](public/believers-interface-preview.jpg)
 
 ## 🛠️ The Toolkit (Equip Yourself)

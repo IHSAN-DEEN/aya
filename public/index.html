@@ -522,17 +522,25 @@
             pointer-events: none;
         }
 
-        .repo-link-btn {
-            display: inline-block;
+        .cta-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
             margin-top: 2rem;
             margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .repo-link-btn {
+            display: inline-block;
             padding: 0.8rem 2rem;
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gold);
             color: var(--gold);
             text-decoration: none;
             font-family: var(--font-cinematic);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -542,6 +550,26 @@
             background: var(--gold);
             color: #000;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .docs-link-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--font-cinematic);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .docs-link-btn:hover {
+            border-color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -567,7 +595,8 @@
             </div>
         </div>
 
-        <div>
+        <div class="cta-container">
+            <a href="https://github.com/IHSAN-DEEN/aya" target="_blank" class="docs-link-btn">Read Documentation</a>
             <a href="/repo" class="repo-link-btn">Open Book of Deeds</a>
         </div>
 

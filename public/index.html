@@ -535,21 +535,24 @@
         .repo-link-btn {
             display: inline-block;
             padding: 0.8rem 2rem;
-            background: rgba(212, 175, 55, 0.1);
+            background: var(--gold);
             border: 1px solid var(--gold);
-            color: var(--gold);
+            color: #050505;
             text-decoration: none;
             font-family: var(--font-cinematic);
             font-size: 1.1rem;
+            font-weight: 700;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
         
         .repo-link-btn:hover {
-            background: var(--gold);
+            background: #e5c14d;
+            border-color: #e5c14d;
             color: #000;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
         }
 
         .docs-link-btn {
@@ -557,7 +560,7 @@
             padding: 0.8rem 2rem;
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             font-family: var(--font-cinematic);
             font-size: 1.1rem;
@@ -568,8 +571,10 @@
 
         .docs-link-btn:hover {
             border-color: var(--text);
+            color: var(--text);
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>

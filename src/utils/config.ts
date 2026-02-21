@@ -5,13 +5,14 @@ import os from 'os';
 const CONFIG_DIR = path.join(process.cwd(), '.aya');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
-interface UserConfig {
+export interface UserConfig {
   name?: string;
   intention?: string;
   location?: {
     city: string;
     country: string;
   };
+  calculationMethod?: number; // 0-12
   lastPrayerCheck?: string;
 }
 
@@ -19,7 +20,8 @@ const defaultConfig: UserConfig = {
   location: {
     city: 'Mecca',
     country: 'Saudi Arabia'
-  }
+  },
+  calculationMethod: 2 // ISNA
 };
 
 export const getConfig = (): UserConfig => {

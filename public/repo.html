@@ -898,26 +898,43 @@
                      return;
                 }
                 
-                document.getElementById('issues-count-badge').textContent = issues.length;
+                document.getElementById('issues-count-badge').textContent = issues.filter(i => i.status === 'open').length;
                 
                 let html = '<ul class="issue-list">';
                 issues.reverse().forEach(issue => {
+                     const closeBtn = issue.status === 'open' 
+                        ? `<button onclick="closeIssue('${issue.id}')" style="margin-left:auto; background:transparent; border:1px solid var(--border-color); color:var(--text-secondary); padding:0.2rem 0.6rem; border-radius:4px; cursor:pointer; font-size:0.7rem; transition:all 0.2s;">Close Issue</button>`
+                        : `<span style="margin-left:auto; color:var(--text-secondary); font-size:0.7rem; display:flex; align-items:center; gap:0.2rem;"><svg width="12" height="12" viewBox="0 0 16 16" fill="var(--accent-green)"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg> Resolved</span>`;
+
                      html += `
                         <li class="issue-item">
                             <div style="padding-top: 4px;">
-                                <svg height="16" viewBox="0 0 16 16" width="16" fill="var(--accent-red)"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
+                                <svg height="16" viewBox="0 0 16 16" width="16" fill="${issue.status === 'open' ? 'var(--accent-red)' : 'var(--accent-green)'}"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
                             </div>
                             <div>
-                                <span class="issue-title">${issue.title}</span>
+                                <span class="issue-title" style="${issue.status === 'closed' ? 'text-decoration: line-through; color: var(--text-secondary);' : ''}">${issue.title}</span>
                                 <div class="issue-meta">
                                     #${issue.id} opened ${timeAgo(issue.timestamp)} by ServantOfAllah
                                 </div>
                             </div>
+                            ${closeBtn}
                         </li>
                      `;
                 });
                 html += '</ul>';
                 container.innerHTML = html;
+                
+                // Add hover effect for close button
+                document.querySelectorAll('.issue-item button').forEach(btn => {
+                    btn.addEventListener('mouseenter', e => {
+                        e.target.style.borderColor = 'var(--accent-red)';
+                        e.target.style.color = 'var(--accent-red)';
+                    });
+                    btn.addEventListener('mouseleave', e => {
+                        e.target.style.borderColor = 'var(--border-color)';
+                        e.target.style.color = 'var(--text-secondary)';
+                    });
+                });
                 
             } catch (e) {
                 container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">Failed to load issues.</div>`;
@@ -1002,6 +1019,22 @@
                     loadPulls();
                 }
             } catch(e) { showToast("Failed to submit dua."); }
+        }
+
+        async function closeIssue(id) {
+            if(!confirm("Are you sure you have repented for this mistake?")) return;
+            
+            try {
+                const res = await fetch(`/api/issues/${id}/close`, { method: 'POST' });
+                if(res.ok) {
+                    showToast("Issue closed. May Allah accept your repentance.");
+                    loadIssues();
+                } else {
+                    showToast("Failed to close issue.");
+                }
+            } catch(e) {
+                showToast("Error closing issue.");
+            }
         }
 
         function renderDemoData() {

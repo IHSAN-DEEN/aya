@@ -1,18 +1,21 @@
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import axios from 'axios';
+import ora from 'ora';
 import { setConfig, getConfig } from '../utils/config';
 import { printCommandHeader } from '../utils/printer';
 
 export const initCommand = new Command('init')
-  .description('Set your intention (niyyah) for this session')
+  .description('Set your intention (niyyah) and configure the CLI')
   .action(async () => {
     printCommandHeader('init');
     const config = getConfig();
 
     console.log(chalk.green('Bismillah. Let us begin with the right intention.'));
     
-    const answers = await inquirer.prompt([
+    // 1. Basic Info
+    const basicAnswers = await inquirer.prompt([
       {
         type: 'input',
         name: 'name',
@@ -24,30 +27,78 @@ export const initCommand = new Command('init')
         name: 'intention',
         message: 'What is your intention for this session?',
         default: config.intention || 'Seeking the pleasure of Allah through code'
-      },
-      {
-        type: 'input',
-        name: 'city',
-        message: 'Where are you located (City)?',
-        default: config.location?.city || 'Mecca'
-      },
-      {
-        type: 'input',
-        name: 'country',
-        message: 'Where are you located (Country)?',
-        default: config.location?.country || 'Saudi Arabia'
       }
     ]);
 
+    // 2. Location Validation
+    let validLocation = false;
+    let city = config.location?.city || 'Mecca';
+    let country = config.location?.country || 'Saudi Arabia';
+
+    while (!validLocation) {
+        const locationAnswers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'city',
+                message: 'Where are you located (City)?',
+                default: city
+            },
+            {
+                type: 'input',
+                name: 'country',
+                message: 'Where are you located (Country)?',
+                default: country
+            }
+        ]);
+
+        city = locationAnswers.city;
+        country = locationAnswers.country;
+
+        const spinner = ora('Verifying location...').start();
+        try {
+            // Use Aladhan API to check if we get times for this location
+            await axios.get('http://api.aladhan.com/v1/timingsByCity', {
+                params: { city, country, method: 2 }
+            });
+            spinner.succeed(chalk.green(`Location confirmed: ${city}, ${country}`));
+            validLocation = true;
+        } catch (error) {
+            spinner.fail(chalk.red('Could not verify location. Please try again.'));
+        }
+    }
+
+    // 3. Calculation Method
+    const methodAnswer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'method',
+            message: 'Which prayer time calculation method do you follow?',
+            default: config.calculationMethod || 2,
+            choices: [
+                { name: 'University of Islamic Sciences, Karachi', value: 1 },
+                { name: 'Islamic Society of North America (ISNA)', value: 2 },
+                { name: 'Muslim World League', value: 3 },
+                { name: 'Umm al-Qura University, Makkah', value: 4 },
+                { name: 'Egyptian General Authority of Survey', value: 5 },
+                { name: 'Institute of Geophysics, University of Tehran', value: 7 },
+                { name: 'Gulf Region', value: 8 },
+                { name: 'Kuwait', value: 9 },
+                { name: 'Qatar', value: 10 },
+                { name: 'Majlis Ugama Islam Singapura, Singapore', value: 11 },
+                { name: 'Union Organization islamic de France', value: 12 },
+                { name: 'Diyanet Isleri Baskanligi, Turkey', value: 13 },
+                { name: 'Spiritual Administration of Muslims of Russia', value: 14 }
+            ]
+        }
+    ]);
+
     setConfig({
-      name: answers.name,
-      intention: answers.intention,
-      location: {
-        city: answers.city,
-        country: answers.country
-      }
+      name: basicAnswers.name,
+      intention: basicAnswers.intention,
+      location: { city, country },
+      calculationMethod: methodAnswer.method
     });
 
-    console.log(chalk.cyan(`\n✨ Intention set: "${answers.intention}"`));
+    console.log(chalk.cyan(`\n✨ Intention set: "${basicAnswers.intention}"`));
     console.log(chalk.gray('May Allah accept your efforts and place Barakah in your code.'));
   });

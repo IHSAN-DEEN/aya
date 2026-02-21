@@ -83,6 +83,20 @@ export const startServer = (port = 0, rootFile = 'index.html'): Promise<number> 
                         res.end(JSON.stringify({ error: 'Invalid JSON' }));
                     }
                 }
+            } else if (req.url?.match(/^\/api\/issues\/([^\/]+)\/close$/) && req.method === 'POST') {
+                // API Endpoint: Close an issue
+                const match = req.url.match(/^\/api\/issues\/([^\/]+)\/close$/);
+                if (match) {
+                    const issueId = match[1];
+                    const success = logger.updateIssueStatus(issueId, 'closed');
+                    if (success) {
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ success: true, message: 'Issue closed' }));
+                    } else {
+                        res.writeHead(404, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Issue not found' }));
+                    }
+                }
             } else if (req.url === '/api/pulls') {
                 if (req.method === 'GET') {
                     const pulls = logger.getPulls();
@@ -99,17 +113,42 @@ export const startServer = (port = 0, rootFile = 'index.html'): Promise<number> 
                             res.writeHead(400, { 'Content-Type': 'application/json' });
                             res.end(JSON.stringify({ error: 'Title required' }));
                         }
-                    } catch (e) {
-                        res.writeHead(400, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Invalid JSON' }));
-                    }
-                }
+            } catch (e) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        }
+    } else {
+        // Try to serve static files from public directory
+        const filePath = path.join(PUBLIC_DIR, req.url || '');
+        // Prevent directory traversal
+        if (!filePath.startsWith(PUBLIC_DIR)) {
+            res.writeHead(403);
+            res.end('Forbidden');
+            return;
+        }
+
+        fs.stat(filePath, (err, stats) => {
+            if (!err && stats.isFile()) {
+                const ext = path.extname(filePath).toLowerCase();
+                const contentTypes: {[key: string]: string} = {
+                    '.html': 'text/html',
+                    '.css': 'text/css',
+                    '.js': 'text/javascript',
+                    '.json': 'application/json',
+                    '.png': 'image/png',
+                    '.jpg': 'image/jpeg',
+                    '.svg': 'image/svg+xml'
+                };
+                serveFile(res, filePath, contentTypes[ext] || 'application/octet-stream');
             } else {
                 // 404 for any other route
                 res.writeHead(404);
                 res.end('Not found');
             }
         });
+    }
+});
 
         server.listen(port, () => {
             const address = server.address();

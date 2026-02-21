@@ -16,21 +16,44 @@ export const prayersCommand = new Command('prayers')
     if (options.config || !config.location?.city || !config.location?.country) {
        const answers = await inquirer.prompt([
         { type: 'input', name: 'city', message: 'Enter your city:', default: config.location?.city },
-        { type: 'input', name: 'country', message: 'Enter your country:', default: config.location?.country }
+        { type: 'input', name: 'country', message: 'Enter your country:', default: config.location?.country },
+        {
+            type: 'list',
+            name: 'method',
+            message: 'Calculation Method:',
+            default: config.calculationMethod || 2,
+            choices: [
+                { name: 'University of Islamic Sciences, Karachi', value: 1 },
+                { name: 'Islamic Society of North America (ISNA)', value: 2 },
+                { name: 'Muslim World League', value: 3 },
+                { name: 'Umm al-Qura University, Makkah', value: 4 },
+                { name: 'Egyptian General Authority of Survey', value: 5 },
+                { name: 'Institute of Geophysics, University of Tehran', value: 7 },
+                { name: 'Gulf Region', value: 8 },
+                { name: 'Kuwait', value: 9 },
+                { name: 'Qatar', value: 10 },
+                { name: 'Majlis Ugama Islam Singapura, Singapore', value: 11 },
+                { name: 'Union Organization islamic de France', value: 12 },
+                { name: 'Diyanet Isleri Baskanligi, Turkey', value: 13 },
+                { name: 'Spiritual Administration of Muslims of Russia', value: 14 }
+            ]
+        }
       ]);
       config.location = { city: answers.city, country: answers.country };
+      config.calculationMethod = answers.method;
       setConfig(config);
     }
 
     const { city, country } = config.location;
-    const spinner = ora(`Fetching prayer times for ${city}, ${country}...`).start();
+    const method = config.calculationMethod || 2; // Default to ISNA if not set
+    const spinner = ora(`Fetching prayer times for ${city}, ${country} (Method: ${method})...`).start();
 
     try {
       const response = await axios.get('http://api.aladhan.com/v1/timingsByCity', {
         params: {
           city,
           country,
-          method: 2 // ISNA (can be configurable later)
+          method
         }
       });
       

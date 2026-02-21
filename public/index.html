@@ -26,7 +26,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Montserrat:wght@300;400;500;600&family=Fira+Code:wght@400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #050505;
@@ -40,6 +40,7 @@
             --border: #333333;
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Inter', sans-serif;
+            --font-montserrat: 'Montserrat', sans-serif;
             --font-mono: 'Fira Code', monospace;
             --font-arabic: 'Amiri', serif;
             --font-cinematic: 'Cinzel', serif;
@@ -446,7 +447,8 @@
             color: var(--text-muted);
             margin-bottom: 1.5rem;
             line-height: 1.7;
-            font-family: var(--font-serif);
+            font-family: var(--font-montserrat);
+            font-weight: 300;
         }
 
         .cmd-meta {
@@ -535,24 +537,21 @@
         .repo-link-btn {
             display: inline-block;
             padding: 0.8rem 2rem;
-            background: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gold);
-            color: #050505;
+            color: var(--gold);
             text-decoration: none;
             font-family: var(--font-cinematic);
             font-size: 1.1rem;
-            font-weight: 700;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
         
         .repo-link-btn:hover {
-            background: #e5c14d;
-            border-color: #e5c14d;
+            background: var(--gold);
             color: #000;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
 
         .docs-link-btn {
@@ -560,7 +559,7 @@
             padding: 0.8rem 2rem;
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text);
             text-decoration: none;
             font-family: var(--font-cinematic);
             font-size: 1.1rem;
@@ -571,10 +570,8 @@
 
         .docs-link-btn:hover {
             border-color: var(--text);
-            color: var(--text);
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>

@@ -1,6 +1,6 @@
 ![aya preview](./public/og-image.png)
 
-# As-salamu alaykum wa rahmatullahi wa barakatuh
+# Assalamu Alaikum Wa Rahmatullah Wa Barakatuh
 
 # aya
 

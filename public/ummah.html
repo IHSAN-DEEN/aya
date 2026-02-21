@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Built by Ummah • Ihsan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050505;
-            --card-bg: #0a0a0a;
+            --bg-color: #0f1115;
             --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
             --accent-gold: #d4af37;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --font-display: 'Cinzel', serif;
-            --font-body: 'Inter', sans-serif;
-            --font-desc: 'Montserrat', sans-serif;
+            --font-cinematic: 'Cinzel', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,13 +18,13 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
-            font-family: var(--font-body);
-            min-height: 100vh;
+            font-family: var(--font-cinematic);
+            height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 4rem 2rem;
-            line-height: 1.6;
+            text-align: center;
+            overflow: hidden;
         }
 
         /* Ambient Background */
@@ -38,134 +33,38 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             background: 
-                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.03) 0%, transparent 60%);
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
             pointer-events: none;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
+        .content {
+            font-size: 1.5rem;
+            line-height: 2;
+            padding: 2rem;
+            max-width: 800px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 400;
-        }
-
-        .section-desc {
-            font-family: var(--font-display);
-            font-weight: 400;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.1em;
         }
 
         .highlight {
             color: var(--accent-gold);
+            font-weight: 700;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            width: 100%;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2.5rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-gold);
-        }
-
-        .card-title {
-            color: var(--accent-gold);
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            line-height: 1.4;
-        }
-
-        .card-text {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 400;
-            line-height: 1.7;
-            letter-spacing: 0.01em;
-        }
-
-        strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        code {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.2em 0.4em;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9em;
-            color: var(--accent-gold);
+        /* Footer-like subtle text */
+        .footer-text {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            letter-spacing: 0.2em;
         }
     </style>
 </head>
 <body>
     <div class="ambient-bg"></div>
-    
-    <div class="section-header">
-        <h1 class="section-title">The Nuance (<span class="highlight">Ihsan</span>)</h1>
-        <p class="section-desc">We optimize our code, but what about our hearts? Aya turns your terminal into a spiritual companion.</p>
-    </div>
-
-    <div class="grid-container">
-        <!-- Card 1 -->
-        <div class="card">
-            <h3 class="card-title">The "Missing" Void</h3>
-            <p class="card-text">
-                You're on a flight. No signal. Does your connection to Allah stop? No. We implemented <strong>Offline Prayers & Hijri Caching</strong>. Once fetched, you're set for the month.
-            </p>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="card">
-            <h3 class="card-title">Grace in Mistakes</h3>
-            <p class="card-text">
-                You type <code>al fatiha</code> but the system expects <code>Al-Fatiha</code>. We added <strong>Fuzzy Matching</strong> because the effort counts. Allah is Merciful with our stumbling, so our tools should be too.
-            </p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="card">
-            <h3 class="card-title">Respecting Differences</h3>
-            <p class="card-text">
-                The Ummah is diverse. We added <strong>Madhab Selection</strong> (Hanafi/Standard) in <code>aya init</code>. We don't force a single view; we accommodate the richness of our tradition.
-            </p>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="card">
-            <h3 class="card-title">Continuity of Deeds</h3>
-            <p class="card-text">
-                New laptop? Don't lose your Hifz progress. We added <strong>Export/Import commands</strong>. Your spiritual data is precious; it moves with you.
-            </p>
-        </div>
+    <div class="content">
+        Built by ummah at <span class="highlight">Ihsan</span> to please Allah,<br>
+        with love for the ummah
     </div>
 </body>
 </html>

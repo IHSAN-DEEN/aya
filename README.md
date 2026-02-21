@@ -74,7 +74,7 @@ You see, the life of a believer is a constant cycle. It's not a straight line. W
 
 ---
 
-![aya preview](public/believers-interface-preview.jpg)
+![aya preview2](public/believers-interface-preview.jpg)
 
 ## 🛠️ The Toolkit (Equip Yourself)
 
@@ -126,6 +126,8 @@ A believer doesn't go into the battlefield unarmed. You need tools. You need rem
 | `aya hijri` | Step out of the Gregorian construct. Live by the moon. |
 
 ---
+
+[![Ummah Page Preview](./public/ummah-page-preview.png)](https://www.ihsandeen.com/)
 
 ## 🤝 Contributing (Sadaqah Jariyah)
 

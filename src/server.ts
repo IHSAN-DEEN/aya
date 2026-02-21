@@ -38,11 +38,13 @@ const readBody = (req: http.IncomingMessage): Promise<any> => {
     });
 };
 
-export const startServer = (port = 0): Promise<number> => {
+export const startServer = (port = 0, rootFile = 'index.html'): Promise<number> => {
     return new Promise((resolve) => {
         const server = http.createServer(async (req, res) => {
             // Basic Router
-            if (req.url === '/' || req.url === '/index.html') {
+            if (req.url === '/') {
+                serveFile(res, path.join(PUBLIC_DIR, rootFile));
+            } else if (req.url === '/index.html') {
                 serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
             } else if (req.url === '/repo') {
                 serveFile(res, path.join(PUBLIC_DIR, 'repo.html'));

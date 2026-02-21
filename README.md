@@ -658,6 +658,8 @@ Listen, this project isn't about me. It's about *us*. It's a **Sadaqah Jariyah**
 The believers are like one body. If one part aches, the rest feels it. If you have questions, feedback, or just want to say Salam, reach out. We are here to serve.
 Email us at: **salam@ihsandeen.com**
 
+You should know, this is **Built by Ummah at [Ihsan](https://github.com/ihsandeen)**. It is an effort by the community, striving to bring excellence to our code and sincerity to our hearts.
+
 **Want to earn that reward?** 👇
 
 1.  **Clone it**: `git clone https://github.com/ihsandeen/aya.git`

@@ -551,12 +551,28 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            cursor: pointer;
+            position: relative;
         }
         
         .repo-link-btn:hover {
             background: var(--gold);
             color: #000;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .repo-link-btn.command-mode {
+            font-family: var(--font-mono);
+            text-transform: none;
+            letter-spacing: 0;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+        }
+
+        .repo-link-btn.command-mode:hover {
+            background: rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
         }
 
         .docs-link-btn {
@@ -604,7 +620,7 @@
 
         <div class="cta-container">
             <a href="https://github.com/IHSAN-DEEN/aya" target="_blank" class="docs-link-btn">Read Documentation</a>
-            <a href="/repo" class="repo-link-btn">Open Book of Deeds</a>
+            <button class="repo-link-btn" onclick="toggleRepoCommand(this)">Open Book of Deeds</button>
         </div>
 
         <div class="terminal-window" id="terminal">
@@ -1162,6 +1178,32 @@
                     btn.classList.remove('copied');
                 }, 2000);
             });
+        }
+
+        // Toggle Repo Command
+        function toggleRepoCommand(btn) {
+            const originalText = "Open Book of Deeds";
+            const command = "aya repo";
+            const instructionText = "$ aya repo";
+            
+            if (!btn.classList.contains('command-mode')) {
+                navigator.clipboard.writeText(command);
+                btn.innerText = instructionText;
+                btn.classList.add('command-mode');
+                
+                // Show feedback
+                const feedback = document.createElement('div');
+                feedback.className = 'copy-feedback show';
+                feedback.innerText = 'Command Copied!';
+                feedback.style.top = '-40px';
+                btn.appendChild(feedback);
+                
+                setTimeout(() => {
+                    if (btn.contains(feedback)) feedback.remove();
+                    btn.innerText = originalText;
+                    btn.classList.remove('command-mode');
+                }, 3000);
+            }
         }
     </script>
 </body>

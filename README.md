@@ -1,5 +1,7 @@
 ![aya preview](./public/og-image.png)
 
+# As-salamu alaykum wa rahmatullahi wa barakatuh
+
 # aya
 
 > "And We have fastened every man's deeds to his neck, and on the Day of Resurrection, We shall bring out for him a book which he will find wide open." (17:13)
@@ -18,7 +20,7 @@ That's why we built **aya**.
 
 ## 💡 The "Insider" Story: Why We Built This
 
-You want to know the truth? This isn't just another developer tool. It’s a response to a modern problem.
+You want to know the truth? This isn't just another developer tool. It’s a response to a modern problem, **Alhamdulillah**.
 
 We live in a time where we are hyper-connected to our repositories but disconnected from our purpose. We track every line of code, but we lose track of our spiritual state.
 
@@ -42,7 +44,7 @@ Every line of code you write can be an *ayah*—a sign of Allah's perfection. Ev
 
 ## 🚀 Quick Start (Bismillah)
 
-You want to get started? Bismillah. It’s simple.
+You want to get started? **Bismillah**. It’s simple, **Alhamdulillah**.
 
 ```bash
 # 1. Install it globally (make it part of your system)
@@ -627,9 +629,32 @@ We didn't just build a CLI. We built it with **Ihsan** (Excellence). Because the
 
 [![Ummah Page Preview](./public/ummah-page-preview.png)](https://www.ihsandeen.com/)
 
+## 💡 11 Ways We Want to Make It Better (Which You Can Too)
+
+You know, the Quran speaks of "Sabiquna as-Sabiqun"—the Foremost. Those who don't just do the bare minimum, but race to do good. We have a vision, **inShaAllah**, but we can't build it alone. We need the *Sabiqun*.
+
+Here are 11 ways we envision this tool growing. Which one will be your legacy?
+
+1.  **Mobile App Sync (The Companion)**: The Prophet ﷺ was always connected to Allah, whether walking or riding. We want to sync your CLI data with a mobile app so your spiritual state travels with you, not just on your desktop.
+2.  **Advanced Tajweed Analysis (The Tongue)**: "Warattil il-Qurana tartila." We want to use AI to listen to your recitation and gently correct your pronunciation. Imagine an algorithm that helps you recite the Words of Allah perfectly.
+3.  **Community Challenges (The Jama'ah)**: The wolf eats the lone sheep. We want global khatam or dhikr challenges where the entire Ummah competes in good deeds. "Fastabiq al-khayrat" - Race towards the good.
+4.  **More Madhabs (The Richness)**: Our Fiqh is a vast ocean. We want expanded, detailed support for Shafi'i, Maliki, and Hanbali rulings. We want to honor the scholarship of the past with the code of the future.
+5.  **Multi-Language Support (The Tongues)**: "And of His signs is the creation of the heavens and the earth and the diversity of your languages." We need Arabic, Urdu, French, Indonesian. Let the code speak to every believer.
+6.  **Quran Hifz Tester (The Guardian)**: You think you memorized it? Let the system test you. Voice recognition to catch the mistakes before you lead Salah. It’s about *Itqan* (perfection).
+7.  **Smart Watch Integration (The Pulse)**: A vibration on your wrist for prayer. A gentle nudge for Dhikr. Technology shouldn't distract you; it should remind you.
+8.  **Knowledge Graph (The Connection)**: Everything in Islam is connected. We want to visualize the web between Ayahs, Hadiths, and historical events. See the *Seerah* as a living network, not just a list of dates.
+9.  **Halal Investment Tracker (The Rizq)**: "Eat of the good things We have provided." We want APIs to screen stocks and track halal investments. Because pure Rizq leads to pure deeds.
+10. **Mosque Finder (The Houses)**: Where is the nearest House of Allah? Locate Masjids and Jama'ah times directly from your terminal. Connect the digital believer to the physical community.
+11. **Open Source API (The Sadaqah)**: We don't want to hoard this data. We want to build a public API for other Islamic apps. Let your code be the foundation for a thousand other apps.
+
 ## 🤝 Contributing (Sadaqah Jariyah)
 
 Listen, this project isn't about me. It's about *us*. It's a **Sadaqah Jariyah**—a continuing charity. Imagine someone using this tool and remembering Allah because of a line of code you wrote. That's a reward that continues even after you're gone.
+
+### 📧 Need Support? (The Nasiha)
+
+The believers are like one body. If one part aches, the rest feels it. If you have questions, feedback, or just want to say Salam, reach out. We are here to serve.
+Email us at: **salam@ihsandeen.com**
 
 **Want to earn that reward?** 👇
 
@@ -643,3 +668,5 @@ If you find a bug, fix it. If you have an idea, build it. Do it with *Ihsan* (ex
 ---
 
 *May Allah accept this humble effort from us and make it a witness for us on the Day of Judgment.* 🤲
+
+**inShaAllah will increase in future as Allah finds fit.**

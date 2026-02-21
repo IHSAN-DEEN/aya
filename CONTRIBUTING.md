@@ -37,3 +37,9 @@ Have an idea to make this tool better for the Ummah? Open an issue and let's dis
 ---
 
 May Allah accept your contributions and place them heavy on your scale of good deeds. Ameen.
+
+## 📧 Need Help? (The Shura)
+
+If you are stuck, don't suffer in silence. The Sahaba used to ask questions.
+"Ask the people of knowledge if you do not know."
+Email us at **salam@ihsandeen.com**. We are all learning together.

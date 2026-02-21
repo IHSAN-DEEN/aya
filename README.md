@@ -42,6 +42,8 @@ Every line of code you write can be an *ayah*—a sign of Allah's perfection. Ev
 
 ---
 
+![aya preview2](./public/believers-interface-preview.jpg)
+
 ## 🚀 Quick Start (Bismillah)
 
 You want to get started? **Bismillah**. It’s simple, **Alhamdulillah**.

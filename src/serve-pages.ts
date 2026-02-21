@@ -13,7 +13,12 @@ const run = async () => {
         console.log(chalk.yellow.bold(`\n  ✨ aya Hero Section running on:`));
         console.log(chalk.cyan.bold(`  http://localhost:${heroPort}/`));
 
-        console.log(chalk.gray(`\n  Press Ctrl+C to stop both servers.`));
+        // Start Repo Page Server (repo.html at root)
+        const repoPort = await startServer(0, 'repo.html');
+        console.log(chalk.green.bold(`\n  📖 aya Book of Deeds running on:`));
+        console.log(chalk.cyan.bold(`  http://localhost:${repoPort}/repo`));
+
+        console.log(chalk.gray(`\n  Press Ctrl+C to stop all servers.`));
     } catch (error) {
         console.error('Failed to start servers:', error);
         process.exit(1);

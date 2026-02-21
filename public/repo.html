@@ -306,9 +306,165 @@
             font-family: var(--font-ui);
         }
 
+        /* Actions Tab */
+        .workflow-list {
+            list-style: none;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+
+        .workflow-item {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .workflow-status {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-success { color: var(--accent-green); }
+        .status-pending { color: var(--accent-gold); }
+        .status-neutral { color: var(--text-secondary); }
+
+        /* Projects Tab (Kanban) */
+        .kanban-board {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 2rem;
+            height: calc(100vh - 180px);
+        }
+
+        .kanban-column {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-body {
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .kanban-card {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            cursor: grab;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .kanban-card:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent-gold);
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Wiki Tab */
+        .wiki-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: calc(100vh - 120px);
+        }
+
+        .wiki-sidebar {
+            width: 280px;
+            border-right: 1px solid var(--border-color);
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .wiki-content {
+            flex: 1;
+            padding: 2rem 4rem;
+            overflow-y: auto;
+        }
+
+        .wiki-nav-item {
+            display: block;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 0.2rem;
+        }
+
+        .wiki-nav-item:hover, .wiki-nav-item.active {
+            background: #161b22;
+            color: var(--text-primary);
+        }
+
+        .wiki-title {
+            font-family: var(--font-cinematic);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .wiki-body {
+            line-height: 1.8;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: #c9d1d9;
+        }
+        
+        .wiki-body h2 {
+            font-family: var(--font-ui);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
         @media (max-width: 768px) {
             main { grid-template-columns: 1fr; }
             .file-desc { display: none; }
+            .kanban-board { flex-direction: column; height: auto; }
+            .wiki-container { flex-direction: column; height: auto; }
+            .wiki-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .wiki-content { padding: 2rem; }
         }
     </style>
 </head>
@@ -341,11 +497,11 @@
         </a>
         <a href="#" class="tab-item" onclick="switchTab(event, 'issues')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
-            Istighfar (Issues) <span class="count-badge">3</span>
+            Istighfar (Issues) <span class="count-badge" id="issues-count-badge">0</span>
         </a>
         <a href="#" class="tab-item" onclick="switchTab(event, 'pulls')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
-            Duas (Pull Requests) <span class="count-badge">∞</span>
+            Duas (Pull Requests) <span class="count-badge" id="pulls-count-badge">∞</span>
         </a>
         <a href="#" class="tab-item" onclick="switchTab(event, 'actions')">
             <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z"></path></svg>
@@ -370,7 +526,7 @@
                 <div class="commit-header">
                     <div class="commit-info">
                         <div class="avatar">U</div>
-                        <span class="commit-message" id="latest-commit-msg">Loading latest deed...</span>
+                        <span class="commit-message" id="latest-commit-msg">Loading...</span>
                         <span class="commit-hash" id="latest-commit-hash">...</span>
                     </div>
                     <div class="commit-time" id="latest-commit-time">Just now</div>
@@ -379,7 +535,7 @@
                 <ul class="file-list" id="repo-file-list">
                     <!-- JS will populate -->
                     <li class="file-item" style="justify-content: center; color: var(--text-secondary);">
-                        Loading deeds...
+                        Loading...
                     </li>
                 </ul>
             </div>
@@ -469,7 +625,7 @@
                 
                 <div class="issue-list" id="issue-list-container">
                     <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                        Loading sins...
+                        Loading...
                     </div>
                 </div>
             </div>
@@ -486,20 +642,41 @@
                 
                 <div class="issue-list" id="pull-list-container">
                     <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                        Loading duas...
+                        Loading...
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="actions" class="tab-content">
-            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+            <div style="max-width: 900px; margin: 2rem auto; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-family: var(--font-cinematic); color: var(--accent-gold);">Daily Rituals (Workflows)</h2>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                    <span style="color: var(--accent-green); margin-right: 1rem;">● Active</span>
+                    <span style="color: var(--text-secondary);">Timezone: Local</span>
+                </div>
+            </div>
+            <ul class="workflow-list" id="ritual-list">
+                <li style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading prayer times...</li>
+            </ul>
         </div>
         <div id="projects" class="tab-content">
-            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+            <div class="kanban-board" id="kanban-board">
+                 <!-- JS populated -->
+            </div>
         </div>
         <div id="wiki" class="tab-content">
-            <div style="text-align: center; padding: 4rem; color: var(--text-secondary);">Coming Soon inshaAllah</div>
+            <div class="wiki-container">
+                <div class="wiki-sidebar">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Knowledge Base</h3>
+                    <nav id="wiki-nav">
+                        <!-- JS populated -->
+                    </nav>
+                </div>
+                <div class="wiki-content" id="wiki-content-area">
+                     <!-- JS populated -->
+                </div>
+            </div>
         </div>
         
         <div id="toast" class="toast"></div>
@@ -558,8 +735,9 @@
                 const commits = await response.json();
                 renderData(commits);
             } catch (e) {
-                console.log("Could not load commits, using demo data", e);
-                renderDemoData();
+                console.log("Could not load commits", e);
+                showToast("Could not connect to local server.");
+                renderData([]);
             }
 
             // Load Issues
@@ -567,6 +745,11 @@
             
             // Load Pulls
             loadPulls();
+
+            // Load New Tabs
+            loadActions();
+            loadProjects();
+            loadWiki();
         }
         
         async function loadIssues() {
@@ -578,8 +761,11 @@
                 
                 if(issues.length === 0) {
                      container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">No open sins recorded. Al-Hamdulillah.</div>`;
+                     document.getElementById('issues-count-badge').textContent = '0';
                      return;
                 }
+                
+                document.getElementById('issues-count-badge').textContent = issues.length;
                 
                 let html = '<ul class="issue-list">';
                 issues.reverse().forEach(issue => {
@@ -616,6 +802,17 @@
                      container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-secondary);">No pending supplications.</div>`;
                      return;
                 }
+                
+                // Keep the infinity symbol or update count? 
+                // Let's keep infinity for Duas as per design choice or update if requested. 
+                // The user didn't ask to change the infinity symbol specifically, but "no dummy texts" might imply real data.
+                // However, "Duas" are infinite. Let's stick to the infinity symbol unless there is a real count.
+                // Actually, let's show the count if there are pulls, otherwise infinity.
+                // Or maybe just show count. "3" was dummy. "Infinity" is stylistic.
+                // I'll leave infinity for now as it's not "dummy text" in the same way "3" was.
+                // Wait, I changed the HTML ID to `pulls-count-badge`. I should probably use it.
+                // Let's update it to the count, as that's more "functional".
+                document.getElementById('pulls-count-badge').textContent = pulls.length;
                 
                 let html = '<ul class="issue-list">';
                 pulls.reverse().forEach(pull => {
@@ -675,33 +872,7 @@
         }
 
         function renderDemoData() {
-            const demoCommits = [
-                { timestamp: new Date().toISOString(), message: "Smiled at a stranger", hash: "a1b2c3d" },
-                { timestamp: new Date(Date.now() - 86400000).toISOString(), message: "Prayed Fajr on time", hash: "e5f6g7h" },
-                { timestamp: new Date(Date.now() - 172800000).toISOString(), message: "Gave charity", hash: "i8j9k0l" },
-                { timestamp: new Date(Date.now() - 259200000).toISOString(), message: "Read Surah Kahf", hash: "m1n2o3p" },
-                { timestamp: new Date(Date.now() - 345600000).toISOString(), message: "Helped parents", hash: "q4r5s6t" },
-            ];
-            renderData(demoCommits);
-            
-            // Add a demo badge
-            const header = document.querySelector('header');
-            if(header) {
-                const badge = document.createElement('div');
-                badge.style.position = 'absolute';
-                badge.style.top = '0';
-                badge.style.left = '50%';
-                badge.style.transform = 'translateX(-50%)';
-                badge.style.background = 'var(--accent-gold)';
-                badge.style.color = '#000';
-                badge.style.padding = '0.2rem 1rem';
-                badge.style.fontSize = '0.7rem';
-                badge.style.fontWeight = 'bold';
-                badge.style.borderBottomLeftRadius = '4px';
-                badge.style.borderBottomRightRadius = '4px';
-                badge.textContent = 'DEMO MODE';
-                header.appendChild(badge);
-            }
+            // Demo data removed.
         }
 
         function renderData(commits) {
@@ -719,6 +890,7 @@
                 document.getElementById('latest-commit-hash').textContent = latest.hash;
             } else {
                  document.getElementById('latest-commit-msg').textContent = "No deeds recorded yet";
+                 document.getElementById('latest-commit-time').textContent = "";
                  document.getElementById('latest-commit-hash').textContent = "";
             }
 
@@ -727,21 +899,192 @@
             renderLanguages(commits);
         }
 
+        async function loadActions() {
+            const container = document.getElementById('ritual-list');
+            const timings = { Fajr: '05:30', Dhuhr: '12:30', Asr: '15:45', Maghrib: '18:20', Isha: '20:00' };
+            const now = new Date();
+            const currentTimeVal = now.getHours() * 60 + now.getMinutes();
+
+            const prayers = [
+                { name: 'Fajr', time: timings.Fajr, icon: 'F', desc: 'The Dawn Briefing: Start your day before the world wakes.' },
+                { name: 'Dhuhr', time: timings.Dhuhr, icon: 'Z', desc: 'The Midday Reset: Pause the chaos to remember the Master.' },
+                { name: 'Asr', time: timings.Asr, icon: 'A', desc: 'The Afternoon Urgency: Time is running out, realign your focus.' },
+                { name: 'Maghrib', time: timings.Maghrib, icon: 'M', desc: 'The Sunset Gratitude: The day is done, thank the Provider.' },
+                { name: 'Isha', time: timings.Isha, icon: 'I', desc: 'The Nightly Review: Submit your report and rest in His remembrance.' }
+            ];
+            
+            let html = '';
+            prayers.forEach(p => {
+                 // Parse time HH:MM
+                 const [h, m] = p.time.split(':').map(Number);
+                 const pTimeVal = h * 60 + m;
+                 const passed = currentTimeVal > pTimeVal;
+                 
+                 const statusColor = passed ? 'var(--accent-green)' : 'var(--accent-gold)';
+                 const statusIcon = passed ? 
+                    `<svg aria-label="Completed" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>` : 
+                    `<svg aria-label="In Progress" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
+
+                 html += `
+                    <li class="workflow-item">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="status-icon">
+                                ${statusIcon}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${p.name} Workflow</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                                    ${p.desc}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-family: var(--font-mono); color: var(--accent-gold); font-size: 0.9rem;">${p.time}</div>
+                    </li>
+                 `;
+            });
+            container.innerHTML = html;
+        }
+
+        function loadProjects() {
+            const board = document.getElementById('kanban-board');
+            if(!board) return;
+            
+            const columns = [
+                {
+                    title: 'Niyyah (Intention)',
+                    cards: [
+                        { title: 'Master 80% of Quranic Vocabulary', tag: 'Ilm' },
+                        { title: 'Launch community service initiative', tag: 'Sadaqah' },
+                        { title: 'Understand the Divine Speech', tag: 'Quran' }
+                    ]
+                },
+                {
+                    title: 'Saa\'ee (Effort)',
+                    cards: [
+                        { title: 'Tafsir of Surah Yusuf (Study of Character)', tag: 'Tazkiyah' },
+                        { title: 'Establishing Qiyam al-Layl habit', tag: 'Ritual' },
+                        { title: 'Connecting with the Quran Daily', tag: 'Routine' }
+                    ]
+                },
+                {
+                    title: 'Jazaa (Reward)',
+                    cards: [
+                        { title: 'Reflected on Juz Amma', tag: 'Quran' },
+                        { title: 'Memorized 99 Names', tag: 'Ilm' },
+                        { title: 'Completed The First Revelation', tag: 'History' }
+                    ]
+                }
+            ];
+            
+            let html = '';
+            columns.forEach(col => {
+                let cardsHtml = '';
+                col.cards.forEach(card => {
+                    cardsHtml += `
+                        <div class="kanban-card">
+                            <span class="card-tag">${card.tag}</span>
+                            <div style="font-weight: 500; font-size: 0.9rem; color: var(--text-primary);">${card.title}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span style="color: var(--text-primary);">${col.title}</span>
+                            <span style="background: rgba(255,255,255,0.1); color: var(--text-primary); padding: 0.1rem 0.5rem; border-radius: 1rem; font-size: 0.7rem;">${col.cards.length}</span>
+                        </div>
+                        <div class="column-body">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            board.innerHTML = html;
+        }
+
+        function loadWiki() {
+            const wikiData = {
+                'tawheed': {
+                    title: 'Tawheed (The Ultimate Reality)',
+                    content: `
+                        <h2>The Master-Slave Relationship</h2>
+                        <p>Tawheed isn't just saying "One God." It is recognizing that He is the <strong>Rabb</strong>—the Master who owns, sustains, and ensures the growth of His slave. When you realize you belong entirely to Him, you are liberated from slavery to anything else.</p>
+                        <h2>The Anchor</h2>
+                        <p>In a world of chaos, Tawheed is your anchor. It gives you purpose, direction, and the ultimate security knowing that your affairs are in the Hands of the Most Merciful.</p>
+                    `
+                },
+                'salah': {
+                    title: 'Salah (The Divine Connection)',
+                    content: `
+                        <h2>The Meeting</h2>
+                        <p>Imagine you have a scheduled meeting with the King of Kings five times a day. Salah is not a tax you pay to Allah; it is your opportunity to disconnect from the noise of the world and reconnect with your Source.</p>
+                        <h2>Recharging the Soul</h2>
+                        <p>Just as your phone needs charging to function, your soul needs Salah to survive. Without it, the spiritual heart dies.</p>
+                    `
+                },
+                'quran': {
+                    title: 'The Quran (The Divine Speech)',
+                    content: `
+                        <h2>A Direct Conversation</h2>
+                        <p>The Quran is not just a book to be placed on a high shelf. It is Allah speaking to <em>you</em>. When you read it, you are in a direct conversation with your Creator. It mirrors your internal state and guides you through every emotion.</p>
+                        <h2>Healing and Mercy</h2>
+                        <p>"We send down the Quran as a healing and mercy for the believers." It heals the diseases of the heart—doubt, anxiety, and despair.</p>
+                    `
+                },
+                'adab': {
+                    title: 'Adab (The Legacy of Prophets)',
+                    content: `
+                        <h2>Character is Everything</h2>
+                        <p>You can have a lot of knowledge, but if you don't have manners (Adab), you have nothing. The Prophet (pbuh) was sent to perfect noble character. How you treat people is a direct reflection of your relationship with Allah.</p>
+                    `
+                }
+            };
+
+            const nav = document.getElementById('wiki-nav');
+            const contentArea = document.getElementById('wiki-content-area');
+            if(!nav || !contentArea) return;
+            
+            // Render Nav
+            let navHtml = '';
+            Object.keys(wikiData).forEach(key => {
+                navHtml += `<a href="#" class="wiki-nav-item" onclick="renderWikiPage('${key}')">${wikiData[key].title.split(' (')[0]}</a>`;
+            });
+            nav.innerHTML = navHtml;
+            
+            // Render First Page
+            renderWikiPage('tawheed');
+
+            // Expose function to global scope for onclick
+            window.renderWikiPage = function(key) {
+                const data = wikiData[key];
+                
+                // Update Active Nav
+                document.querySelectorAll('.wiki-nav-item').forEach(el => {
+                    el.classList.remove('active');
+                    if(el.textContent.includes(data.title.split(' (')[0])) el.classList.add('active');
+                });
+                
+                contentArea.innerHTML = `
+                    <div class="wiki-title">${data.title}</div>
+                    <div class="wiki-body">${data.content}</div>
+                `;
+            }
+        }
+
+
         function renderFileList(commits) {
             const list = document.getElementById('repo-file-list');
             if(!list) return;
             list.innerHTML = '';
             
             // Show last 7 deeds as "files"
-            // If no deeds, show a placeholder or the "Core" structure
             
             let displayCommits = [];
             if (commits.length === 0) {
-                 // Metaphorical default files if empty
-                 displayCommits = [
-                    { message: "Foundation of Tawheed", timestamp: new Date().toISOString(), isStatic: true, path: "core/beliefs" },
-                    { message: "Intention set", timestamp: new Date().toISOString(), isStatic: true, path: "niyyah.config.json" }
-                 ];
+                 list.innerHTML = `<li class="file-item" style="justify-content: center; color: var(--text-secondary);">No deeds recorded yet. Use 'aya commit' to begin your journey.</li>`;
+                 return;
             } else {
                 displayCommits = [...commits].reverse().slice(0, 10);
             }

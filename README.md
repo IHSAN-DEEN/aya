@@ -662,7 +662,7 @@ You should know, this is **Built by Ummah at [Ihsan](https://github.com/ihsandee
 
 **Want to earn that reward?** 👇
 
-1.  **Clone it**: `git clone https://github.com/ihsandeen/aya.git`
+1.  **Clone it**: `git clone https://github.com/IHSAN-DEEN/aya.git`
 2.  **Install it**: `npm install`
 3.  **Build it**: `npm run build`
 4.  **Link it**: `npm link`

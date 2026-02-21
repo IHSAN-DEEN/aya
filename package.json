@@ -21,11 +21,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ihsandeen/aya.git"
+    "url": "git+https://github.com/IHSAN-DEEN/aya.git"
   },
   "homepage": "https://aya.ihsandeen.com/",
   "bugs": {
-    "url": "https://github.com/ihsandeen/aya/issues"
+    "url": "https://github.com/IHSAN-DEEN/aya/issues"
   },
   "keywords": [
     "islam",

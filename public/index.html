@@ -275,6 +275,69 @@
             color: var(--text);
             margin-bottom: 1rem;
             letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .section-desc {
+            font-family: var(--font-cinematic);
+            font-weight: 400;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            letter-spacing: 0.02em;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            text-align: left;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .card-title {
+            color: var(--gold);
+            font-family: var(--font-cinematic);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+        }
+
+        code {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            color: var(--gold);
         }
 
         .section-header p {
@@ -636,39 +699,44 @@
     </section>
 
     <!-- New Section: The Nuance (Ihsan) -->
-    <section class="container" style="padding: 4rem 0; text-align: center;">
-        <h2 class="section-title" style="font-size: 3rem; margin-bottom: 1rem;">The Nuance (<span class="text-gold">Ihsan</span>)</h2>
-        <p class="section-desc" style="font-family: var(--font-cinematic); font-weight: 400; font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 4rem auto; letter-spacing: 0.02em;">We optimize our code, but what about our hearts? Aya turns your terminal into a spiritual companion.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; text-align: left;">
-            
-            <div style="background: rgba(20,20,20,0.4); padding: 2rem; border: 1px solid var(--border); border-radius: 8px;">
-                <h3 class="font-cinematic text-gold" style="font-size: 1.5rem; margin-bottom: 1rem;">The "Missing" Void</h3>
-                <p class="text-dim font-montserrat">
-                    You’re on a flight. No signal. Does your connection to Allah stop? No. We implemented <strong>Offline Prayers</strong> & <strong>Hijri Caching</strong>. Once fetched, you're set for the month.
+    <section class="container" style="padding: 4rem 0;">
+        <div class="section-header">
+            <h2 class="section-title">The Nuance (<span class="text-gold">Ihsan</span>)</h2>
+            <p class="section-desc">We optimize our code, but what about our hearts? Aya turns your terminal into a spiritual companion.</p>
+        </div>
+
+        <div class="grid-container">
+            <!-- Card 1 -->
+            <div class="card">
+                <h3 class="card-title">The "Missing" Void</h3>
+                <p class="card-text">
+                    You're on a flight. No signal. Does your connection to Allah stop? No. We implemented <strong>Offline Prayers & Hijri Caching</strong>. Once fetched, you're set for the month.
                 </p>
             </div>
 
-            <div style="background: rgba(20,20,20,0.4); padding: 2rem; border: 1px solid var(--border); border-radius: 8px;">
-                <h3 class="font-cinematic text-gold" style="font-size: 1.5rem; margin-bottom: 1rem;">Grace in Mistakes</h3>
-                <p class="text-dim font-montserrat">
+            <!-- Card 2 -->
+            <div class="card">
+                <h3 class="card-title">Grace in Mistakes</h3>
+                <p class="card-text">
                     You type <code>al fatiha</code> but the system expects <code>Al-Fatiha</code>. We added <strong>Fuzzy Matching</strong> because the effort counts. Allah is Merciful with our stumbling, so our tools should be too.
                 </p>
             </div>
 
-            <div style="background: rgba(20,20,20,0.4); padding: 2rem; border: 1px solid var(--border); border-radius: 8px;">
-                <h3 class="font-cinematic text-gold" style="font-size: 1.5rem; margin-bottom: 1rem;">Respecting Differences</h3>
-                <p class="text-dim font-montserrat">
+            <!-- Card 3 -->
+            <div class="card">
+                <h3 class="card-title">Respecting Differences</h3>
+                <p class="card-text">
                     The Ummah is diverse. We added <strong>Madhab Selection</strong> (Hanafi/Standard) in <code>aya init</code>. We don't force a single view; we accommodate the richness of our tradition.
                 </p>
             </div>
 
-            <div style="background: rgba(20,20,20,0.4); padding: 2rem; border: 1px solid var(--border); border-radius: 8px;">
-                <h3 class="font-cinematic text-gold" style="font-size: 1.5rem; margin-bottom: 1rem;">Continuity of Deeds</h3>
-                <p class="text-dim font-montserrat">
-                    New laptop? Don't lose your <em>Hifz</em> progress. We added <strong>Export/Import</strong> commands. Your spiritual data is precious; it moves with you.
+            <!-- Card 4 -->
+            <div class="card">
+                <h3 class="card-title">Continuity of Deeds</h3>
+                <p class="card-text">
+                    New laptop? Don't lose your Hifz progress. We added <strong>Export/Import commands</strong>. Your spiritual data is precious; it moves with you.
                 </p>
             </div>
-
         </div>
     </section>
 

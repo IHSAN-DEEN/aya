@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Book of Deeds • aya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:wght@400;700&family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Fira+Code:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f1115;
             --card-bg: rgba(22, 27, 34, 0.8);
             --border-color: #30363d;
-            --text-primary: #c9d1d9;
+            --text-primary: #e6edf3;
             --text-secondary: #8b949e;
             --accent-gold: #d4af37;
             --accent-green: #2ea043;
             --accent-red: #da3633;
             --font-cinematic: 'Cinzel', serif;
-            --font-body: 'Playfair Display', serif;
             --font-mono: 'Fira Code', monospace;
             --font-ui: 'Inter', sans-serif;
         }
@@ -27,8 +26,14 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: var(--font-ui);
-            line-height: 1.5;
+            line-height: 1.6;
             overflow-x: hidden;
+        }
+
+        /* No Italics - User Preference */
+        em, i {
+            font-style: normal;
+            color: var(--accent-gold);
         }
 
         /* Ambient Background */
@@ -37,77 +42,115 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             background: 
-                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(46, 160, 67, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(46, 160, 67, 0.08) 0%, transparent 45%);
             pointer-events: none;
         }
 
         /* Header */
         header {
-            background: #161b22;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .repo-breadcrumb {
             display: flex;
             align-items: center;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--accent-gold);
             font-family: var(--font-cinematic);
+            letter-spacing: 0.05em;
         }
 
-        .repo-breadcrumb svg { margin-right: 0.5rem; }
+        .repo-breadcrumb svg { margin-right: 0.75rem; }
         .repo-breadcrumb span { margin: 0 0.5rem; color: var(--text-secondary); }
-        .repo-name { font-weight: 700; }
+        .repo-name { font-weight: 700; color: var(--text-primary); }
+        
         .badge-public {
             border: 1px solid var(--border-color);
             border-radius: 2rem;
-            padding: 0.1rem 0.5rem;
-            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             margin-left: 1rem;
             font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        .btn-header {
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-header:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.1);
         }
 
         /* Tabs */
         .repo-tabs {
-            background: #161b22;
+            background: rgba(22, 27, 34, 0.95);
             padding: 0 2rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             overflow-x: auto;
         }
 
         .tab-item {
-            padding: 1rem 0;
-            color: var(--text-primary);
+            padding: 1rem 0.5rem;
+            color: var(--text-secondary);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             border-bottom: 2px solid transparent;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            transition: all 0.2s;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            font-family: var(--font-ui); /* Changed to Inter as per preference for UI elements */
+            text-transform: uppercase;
+            letter-spacing: 0.15em; /* Tracking widest */
+            font-weight: 500;
+            white-space: nowrap;
         }
 
-        .tab-item:hover { opacity: 1; }
+        .tab-item:hover { color: var(--text-primary); }
         .tab-item.active {
             border-bottom-color: var(--accent-gold);
+            color: var(--accent-gold);
             font-weight: 600;
-            opacity: 1;
         }
 
         .count-badge {
-            background: rgba(110, 118, 129, 0.4);
+            background: rgba(110, 118, 129, 0.2);
             border-radius: 2rem;
-            padding: 0 0.4rem;
-            font-size: 0.75rem;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.7rem;
+            color: var(--text-primary);
         }
 
         /* Main Content */
@@ -129,88 +172,124 @@
             border-radius: 6px;
             background: #0d1117;
             overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .file-explorer:hover {
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.3);
         }
 
         .commit-header {
-            background: #161b22;
+            background: rgba(22, 27, 34, 0.95);
             padding: 1rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .commit-info { display: flex; align-items: center; gap: 0.5rem; }
+        .commit-info { display: flex; align-items: center; gap: 0.75rem; }
         .avatar {
             width: 24px; height: 24px;
             border-radius: 50%;
             background: var(--accent-gold);
             display: flex; align-items: center; justify-content: center;
-            color: #000; font-weight: bold; font-size: 12px;
+            color: #000; font-weight: bold; font-size: 10px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
-        .commit-message { color: var(--text-primary); font-weight: 500; }
-        .commit-time { color: var(--text-secondary); font-size: 0.8rem; }
-        .commit-hash { font-family: var(--font-mono); color: var(--text-secondary); }
+        .commit-message { color: var(--text-primary); font-weight: 500; font-family: var(--font-ui); }
+        .commit-time { color: var(--text-secondary); font-size: 0.75rem; }
+        .commit-hash { font-family: var(--font-mono); color: var(--accent-gold); opacity: 0.8; font-size: 0.8rem; }
 
         .file-list { list-style: none; }
         .file-item {
             display: grid;
-            grid-template-columns: auto 1fr auto;
+            grid-template-columns: auto auto 1fr auto;
             gap: 1rem;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.25rem;
             border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s;
+            transition: all 0.2s ease;
             cursor: pointer;
+            align-items: center;
         }
 
         .file-item:last-child { border-bottom: none; }
-        .file-item:hover { background: #161b22; }
+        .file-item:hover { 
+            background: rgba(212, 175, 55, 0.05);
+            padding-left: 1.5rem;
+        }
         
-        .file-icon { color: var(--text-secondary); }
-        .file-icon.folder { color: #54aeff; }
-        .file-name { color: var(--text-primary); text-decoration: none; }
-        .file-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        .file-time { color: var(--text-secondary); font-size: 0.8rem; text-align: right; }
+        .file-icon { color: var(--icon-color, var(--text-secondary)); display: flex; align-items: center; transition: color 0.2s; }
+        .file-item:hover .file-icon { color: var(--accent-gold); }
+        
+        .file-name { color: var(--text-primary); text-decoration: none; font-family: var(--font-mono); font-size: 0.9rem; transition: color 0.2s; }
+        .file-item:hover .file-name { color: var(--accent-gold); }
+        
+        .file-message { color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-time { color: var(--text-secondary); font-size: 0.8rem; text-align: right; white-space: nowrap; font-family: var(--font-mono); }
 
         /* Readme Section */
         .readme-container {
             margin-top: 2rem;
             border: 1px solid var(--border-color);
             border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
         .readme-header {
-            padding: 0.5rem 1rem;
-            background: #161b22;
+            padding: 0.75rem 1.25rem;
+            background: rgba(22, 27, 34, 0.95);
             border-bottom: 1px solid var(--border-color);
             font-size: 0.8rem;
             font-weight: 600;
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .readme-content {
-            padding: 2rem;
+            padding: 2.5rem;
             background: #0d1117;
-            font-family: var(--font-body);
+            font-family: var(--font-ui);
         }
         .readme-content h1 {
             font-family: var(--font-cinematic);
             color: var(--accent-gold);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 2rem;
         }
-        .readme-content p { margin-bottom: 1rem; color: var(--text-primary); }
+        .readme-content p { margin-bottom: 1.25rem; color: var(--text-primary); line-height: 1.7; font-weight: 300; }
         .readme-content blockquote {
-            border-left: 4px solid var(--accent-gold);
-            padding-left: 1rem;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 1.25rem;
             color: var(--text-secondary);
-            font-style: italic;
+            font-style: normal;
+            font-family: var(--font-ui);
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            background: rgba(212, 175, 55, 0.05);
+            padding: 1rem;
+            border-radius: 0 6px 6px 0;
         }
 
         /* Sidebar */
         .sidebar h3 {
-            font-size: 1rem;
+            font-size: 0.85rem;
             margin-bottom: 1rem;
             font-weight: 600;
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
         }
         .sidebar-section {
             padding-bottom: 1.5rem;
@@ -219,11 +298,14 @@
         }
         .sidebar-item {
             display: flex;
-            justify-content: space-between;
+            align-items: center;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
             color: var(--text-secondary);
+            font-family: var(--font-ui);
+            transition: color 0.2s;
         }
+        .sidebar-item:hover { color: var(--accent-gold); }
         .lang-bar {
             height: 8px;
             border-radius: 4px;
@@ -232,12 +314,12 @@
             margin-top: 1rem;
         }
         .lang-segment { height: 100%; }
-        .lang-list { margin-top: 0.5rem; list-style: none; }
+        .lang-list { margin-top: 0.75rem; list-style: none; }
         .lang-dot {
             display: inline-block;
             width: 8px; height: 8px;
             border-radius: 50%;
-            margin-right: 0.5rem;
+            margin-right: 0.75rem;
         }
 
         /* Contribution Graph */
@@ -245,65 +327,79 @@
             margin-top: 2rem;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 1rem;
+            padding: 1.5rem;
             background: #0d1117;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
         .graph-grid {
             display: grid;
             grid-template-columns: repeat(53, 1fr);
-            gap: 3px;
+            gap: 4px;
             margin-top: 0.5rem;
         }
         .graph-day {
             width: 10px; height: 10px;
             background: #161b22;
             border-radius: 2px;
+            transition: all 0.2s;
         }
+        .graph-day:hover { transform: scale(1.5); }
         .level-0 { background: #161b22; }
-        .level-1 { background: #0e4429; }
-        .level-2 { background: #006d32; }
-        .level-3 { background: #26a641; }
-        .level-4 { background: #39d353; }
+        .level-1 { background: rgba(212, 175, 55, 0.2); }
+        .level-2 { background: rgba(212, 175, 55, 0.4); }
+        .level-3 { background: rgba(212, 175, 55, 0.7); }
+        .level-4 { background: #d4af37; box-shadow: 0 0 5px #d4af37; }
 
         /* Tab Content Switching */
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* Issue/PR List Styles */
-        .issue-list { list-style: none; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+        .issue-list { 
+            list-style: none; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
         .issue-item {
-            padding: 1rem;
+            padding: 1.25rem;
             background: #0d1117;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             gap: 1rem;
             align-items: flex-start;
+            transition: background 0.2s;
         }
+        .issue-item:hover { background: rgba(212, 175, 55, 0.05); }
         .issue-item:last-child { border-bottom: none; }
         .issue-status { color: var(--accent-green); font-size: 0.9rem; margin-top: 2px; }
         .issue-status.open { color: var(--accent-green); }
         .issue-status.closed { color: var(--accent-red); }
-        .issue-title { font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 0.25rem; }
-        .issue-meta { font-size: 0.8rem; color: var(--text-secondary); }
+        .issue-title { font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 0.25rem; font-family: var(--font-ui); font-size: 1rem; }
+        .issue-meta { font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-ui); }
         
         /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: #1f6feb;
-            color: white;
-            padding: 1rem 1.5rem;
+            background: var(--accent-gold);
+            color: #000;
+            padding: 1rem 2rem;
             border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
             display: none;
             z-index: 100;
             font-family: var(--font-ui);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         /* Actions Tab */
@@ -317,22 +413,28 @@
             background: #161b22;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: all 0.2s;
+        }
+        
+        .workflow-item:hover {
+            border-color: var(--accent-gold);
+            transform: translateX(5px);
         }
 
         .workflow-status {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .status-icon {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -346,28 +448,34 @@
         /* Projects Tab (Kanban) */
         .kanban-board {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             overflow-x: auto;
             padding: 2rem;
             height: calc(100vh - 180px);
         }
 
         .kanban-column {
-            background: #161b22;
+            background: #0d1117;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            min-width: 300px;
+            min-width: 320px;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
         .column-header {
-            padding: 1rem;
+            padding: 1rem 1.25rem;
             border-bottom: 1px solid var(--border-color);
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(22, 27, 34, 0.95);
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
         }
 
         .column-body {
@@ -377,27 +485,34 @@
         }
 
         .kanban-card {
-            background: #0d1117;
+            background: #161b22;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 1rem;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
             cursor: grab;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s;
         }
 
         .kanban-card:hover {
-            border-color: var(--text-secondary);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
 
         .card-tag {
-            font-size: 0.7rem;
-            padding: 0.1rem 0.4rem;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 2rem;
             background: rgba(212, 175, 55, 0.1);
             color: var(--accent-gold);
             display: inline-block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         /* Wiki Tab */
@@ -406,56 +521,74 @@
             max-width: 1200px;
             margin: 0 auto;
             height: calc(100vh - 120px);
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            overflow: hidden;
         }
 
         .wiki-sidebar {
-            width: 280px;
+            width: 300px;
             border-right: 1px solid var(--border-color);
             padding: 2rem;
             overflow-y: auto;
+            background: #161b22;
         }
 
         .wiki-content {
             flex: 1;
-            padding: 2rem 4rem;
+            padding: 3rem 4rem;
             overflow-y: auto;
+            background: #0d1117;
         }
 
         .wiki-nav-item {
             display: block;
-            padding: 0.5rem;
+            padding: 0.75rem 1rem;
             color: var(--text-secondary);
             text-decoration: none;
             border-radius: 6px;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
 
         .wiki-nav-item:hover, .wiki-nav-item.active {
-            background: #161b22;
-            color: var(--text-primary);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent-gold);
+            font-weight: 500;
         }
 
         .wiki-title {
             font-family: var(--font-cinematic);
             font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .wiki-body {
             line-height: 1.8;
-            font-family: var(--font-body);
-            font-size: 1.1rem;
-            color: #c9d1d9;
+            font-family: var(--font-ui);
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            font-weight: 300;
         }
         
         .wiki-body h2 {
-            font-family: var(--font-ui);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+            font-family: var(--font-cinematic);
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
             color: var(--text-primary);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            width: fit-content;
         }
 
         @media (max-width: 768px) {
@@ -481,10 +614,10 @@
         </div>
         
         <div style="display: flex; gap: 1rem;">
-            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+            <button class="btn-header">
                 ★ Star <span class="count-badge" id="star-count">0</span>
             </button>
-            <button style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+            <button class="btn-header">
                 ⑂ Fork <span class="count-badge" id="fork-count">0</span>
             </button>
         </div>
@@ -772,7 +905,7 @@
                      html += `
                         <li class="issue-item">
                             <div style="padding-top: 4px;">
-                                <svg height="16" viewBox="0 0 16 16" width="16" style="color: var(--accent-red);"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
+                                <svg height="16" viewBox="0 0 16 16" width="16" fill="var(--accent-red)"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
                             </div>
                             <div>
                                 <span class="issue-title">${issue.title}</span>
@@ -819,7 +952,7 @@
                      html += `
                         <li class="issue-item">
                             <div style="padding-top: 4px;">
-                                <svg height="16" viewBox="0 0 16 16" width="16" style="color: var(--accent-green);"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
+                                <svg height="16" viewBox="0 0 16 16" width="16" fill="var(--accent-green)"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zm4.053 5.424c.045-.308-.232-.543-.534-.474-.203.046-.403.108-.597.186-.39.158-.94.44-1.49.96-.54.51-.97 1.21-1.2 1.83a.249.249 0 00.081.28c.15.112.308.203.473.272.507.211 1.252.348 2.065.348.813 0 1.558-.137 2.065-.348.165-.069.323-.16.473-.272a.249.249 0 00.081-.28c-.23-.62-.66-1.32-1.2-1.83-.55-.52-1.1-.802-1.49-.96-.194-.078-.394-.14-.597-.186-.302-.07-.58.166-.534.474a9.09 9.09 0 011.025 0zm-3.328 4.29c.732.305 1.636.462 2.625.462 2.513 0 4.15-1.357 4.854-2.478a2.008 2.008 0 00-.28-2.693c-.85-.807-1.867-1.163-2.73-1.332a7.614 7.614 0 00-3.69 0c-.862.17-1.88.525-2.73 1.332a2.008 2.008 0 00-.28 2.693c.704 1.12 2.341 2.478 4.854 2.478.118 0 .235-.002.35-.007-.117.005-.236.007-.353.007z"></path></svg>
                             </div>
                             <div>
                                 <span class="issue-title">${pull.title}</span>
@@ -901,48 +1034,82 @@
 
         async function loadActions() {
             const container = document.getElementById('ritual-list');
-            const timings = { Fajr: '05:30', Dhuhr: '12:30', Asr: '15:45', Maghrib: '18:20', Isha: '20:00' };
-            const now = new Date();
-            const currentTimeVal = now.getHours() * 60 + now.getMinutes();
-
-            const prayers = [
-                { name: 'Fajr', time: timings.Fajr, icon: 'F', desc: 'The Dawn Briefing: Start your day before the world wakes.' },
-                { name: 'Dhuhr', time: timings.Dhuhr, icon: 'Z', desc: 'The Midday Reset: Pause the chaos to remember the Master.' },
-                { name: 'Asr', time: timings.Asr, icon: 'A', desc: 'The Afternoon Urgency: Time is running out, realign your focus.' },
-                { name: 'Maghrib', time: timings.Maghrib, icon: 'M', desc: 'The Sunset Gratitude: The day is done, thank the Provider.' },
-                { name: 'Isha', time: timings.Isha, icon: 'I', desc: 'The Nightly Review: Submit your report and rest in His remembrance.' }
-            ];
             
-            let html = '';
-            prayers.forEach(p => {
-                 // Parse time HH:MM
-                 const [h, m] = p.time.split(':').map(Number);
-                 const pTimeVal = h * 60 + m;
-                 const passed = currentTimeVal > pTimeVal;
-                 
-                 const statusColor = passed ? 'var(--accent-green)' : 'var(--accent-gold)';
-                 const statusIcon = passed ? 
-                    `<svg aria-label="Completed" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>` : 
-                    `<svg aria-label="In Progress" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
+            // Show loading state
+            container.innerHTML = `<li style="text-align: center; padding: 2rem; color: var(--text-secondary);">Detecting location for accurate prayer times...</li>`;
 
-                 html += `
-                    <li class="workflow-item">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div class="status-icon">
-                                ${statusIcon}
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--text-primary);">${p.name} Workflow</div>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                                    ${p.desc}
+            try {
+                // Get location
+                const position = await new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) reject('Geolocation not supported');
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+
+                const { latitude, longitude } = position.coords;
+                const date = new Date().toISOString().split('T')[0].split('-').reverse().join('-'); // DD-MM-YYYY
+
+                // Fetch timings
+                const response = await fetch(`https://api.aladhan.com/v1/timings/${Math.floor(Date.now() / 1000)}?latitude=${latitude}&longitude=${longitude}&method=2`);
+                if (!response.ok) throw new Error('Failed to fetch timings');
+                
+                const data = await response.json();
+                const timings = data.data.timings;
+                const locationName = data.data.meta.timezone; // Or reverse geocode if needed, but timezone is often sufficient context
+
+                // Update location indicator
+                const locationSpan = document.querySelector('#actions .tab-content span:last-child');
+                if (locationSpan) locationSpan.textContent = `Location: ${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+
+                const now = new Date();
+                const currentTimeVal = now.getHours() * 60 + now.getMinutes();
+
+                const prayers = [
+                    { name: 'Fajr', time: timings.Fajr, icon: 'F', desc: 'The Dawn Briefing: Start your day before the world wakes.' },
+                    { name: 'Dhuhr', time: timings.Dhuhr, icon: 'Z', desc: 'The Midday Reset: Pause the chaos to remember the Master.' },
+                    { name: 'Asr', time: timings.Asr, icon: 'A', desc: 'The Afternoon Urgency: Time is running out, realign your focus.' },
+                    { name: 'Maghrib', time: timings.Maghrib, icon: 'M', desc: 'The Sunset Gratitude: The day is done, thank the Provider.' },
+                    { name: 'Isha', time: timings.Isha, icon: 'I', desc: 'The Nightly Review: Submit your report and rest in His remembrance.' }
+                ];
+                
+                let html = '';
+                prayers.forEach(p => {
+                     // Parse time HH:MM
+                     const [h, m] = p.time.split(':').map(Number);
+                     const pTimeVal = h * 60 + m;
+                     const passed = currentTimeVal > pTimeVal;
+                     
+                     const statusColor = passed ? 'var(--accent-green)' : 'var(--accent-gold)';
+                     const statusIcon = passed ? 
+                        `<svg aria-label="Completed" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>` : 
+                        `<svg aria-label="In Progress" height="16" viewBox="0 0 16 16" width="16" fill="${statusColor}"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
+
+                     html += `
+                        <li class="workflow-item">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div class="status-icon">
+                                    ${statusIcon}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary);">${p.name} Workflow</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                                        ${p.desc}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style="font-family: var(--font-mono); color: var(--accent-gold); font-size: 0.9rem;">${p.time}</div>
-                    </li>
-                 `;
-            });
-            container.innerHTML = html;
+                            <div style="font-family: var(--font-mono); color: var(--accent-gold); font-size: 0.9rem;">${p.time}</div>
+                        </li>
+                     `;
+                });
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error(error);
+                // Fallback to default if location denied
+                container.innerHTML = `<li style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                    Could not detect location. <br>
+                    <button onclick="loadActions()" style="margin-top:1rem; background:var(--accent-gold); border:none; padding:0.5rem 1rem; border-radius:4px; cursor:pointer;">Retry</button>
+                </li>`;
+            }
         }
 
         function loadProjects() {
@@ -1121,11 +1288,11 @@
                 const svgIcon = `<svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>`;
 
                 li.innerHTML = `
-                    <span class="file-icon" style="color: ${iconColor}">
+                    <span class="file-icon" style="--icon-color: ${iconColor}">
                         ${svgIcon}
                     </span>
                     <a href="#" class="file-name" style="color: var(--text-primary); text-decoration: none;">${path}</a>
-                    <span class="file-desc">${c.message}</span>
+                    <span class="file-message">${c.message}</span>
                     <span class="file-time">${timeDisplay}</span>
                 `;
                 list.appendChild(li);
@@ -1135,11 +1302,11 @@
             const readme = document.createElement('li');
             readme.className = 'file-item';
             readme.innerHTML = `
-                <span class="file-icon">
+                <span class="file-icon" style="--icon-color: var(--text-secondary)">
                     <svg aria-label="File" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h6.5c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16H3.75A1.75 1.75 0 012 14.25V1.75z"></path></svg>
                 </span>
                 <a href="#" class="file-name">README.md</a>
-                <span class="file-desc">Initial commit</span>
+                <span class="file-message">Initial commit</span>
                 <span class="file-time">Creation</span>
             `;
             list.appendChild(readme);
@@ -1180,8 +1347,8 @@
                 Tawakkul: '#d4af37', // Gold
                 Sabr: '#2ea043', // Green
                 Jihad: '#da3633', // Red
-                Ibadah: '#a371f7', // Purple
-                Ilm: '#54aeff', // Blue
+                Ibadah: '#9e75e5', // Muted Purple
+                Ilm: '#4a90e2', // Muted Blue
                 Sadaqah: '#db6d28', // Orange
                 Other: '#8b949e', // Grey
                 Niyyah: '#ffffff'

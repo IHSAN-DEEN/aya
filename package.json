@@ -6,8 +6,12 @@
   "bin": {
     "aya": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build",
     "dev": "ts-node src/index.ts",
     "start": "ts-node src/index.ts",
     "site": "ts-node src/server.ts",

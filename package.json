@@ -1,6 +1,6 @@
 {
   "name": "@ihsandeen/aya",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "We optimize our code, but what about our hearts? Aya turns your terminal into a spiritual companion—tracking prayers, auditing intentions, and pushing deeds that last forever. Because the most important deployment is the one to the Akhira.",
   "main": "dist/index.js",
   "bin": {

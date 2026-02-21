@@ -5,6 +5,7 @@ import axios from 'axios';
 import ora from 'ora';
 import { setConfig, getConfig } from '../utils/config';
 import { printCommandHeader } from '../utils/printer';
+import { RECITERS } from './recite';
 
 export const initCommand = new Command('init')
   .description('Set your intention (niyyah) and configure the CLI')
@@ -92,11 +93,49 @@ export const initCommand = new Command('init')
         }
     ]);
 
+    // 3.5 Madhab (Asr Calculation)
+    const madhabAnswer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'madhab',
+            message: 'Which Madhab do you follow for Asr prayer?',
+            default: config.madhab || 0,
+            choices: [
+                { name: 'Standard (Shafi, Maliki, Hanbali) - Asr = 1x shadow', value: 0 },
+                { name: 'Hanafi - Asr = 2x shadow', value: 1 }
+            ]
+        }
+    ]);
+
+    // 4. Preferred Reciter
+    const reciterAnswer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'reciter',
+            message: 'Who is your preferred Quran reciter?',
+            default: config.preferredReciter || 7, // Default to Mishary (7)
+            choices: RECITERS.map(r => ({ name: r.name, value: r.id }))
+        }
+    ]);
+
+    // 5. Notifications
+    const notificationAnswer = await inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'notifications',
+            message: 'Would you like to enable desktop notifications for prayers?',
+            default: config.notifications !== undefined ? config.notifications : true
+        }
+    ]);
+
     setConfig({
       name: basicAnswers.name,
       intention: basicAnswers.intention,
       location: { city, country },
-      calculationMethod: methodAnswer.method
+      calculationMethod: methodAnswer.method,
+      madhab: madhabAnswer.madhab,
+      preferredReciter: reciterAnswer.reciter,
+      notifications: notificationAnswer.notifications
     });
 
     console.log(chalk.cyan(`\n✨ Intention set: "${basicAnswers.intention}"`));

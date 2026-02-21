@@ -13,6 +13,9 @@ export interface UserConfig {
     country: string;
   };
   calculationMethod?: number; // 0-12
+  madhab?: number; // 0=Shafi/Maliki/Hanbali (Standard), 1=Hanafi
+  preferredReciter?: number;
+  notifications?: boolean;
   lastPrayerCheck?: string;
 }
 
@@ -21,7 +24,8 @@ const defaultConfig: UserConfig = {
     city: 'Mecca',
     country: 'Saudi Arabia'
   },
-  calculationMethod: 2 // ISNA
+  calculationMethod: 2, // ISNA
+  madhab: 0 // Standard (Shafi, Maliki, Hanbali)
 };
 
 export const getConfig = (): UserConfig => {

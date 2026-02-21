@@ -1,8 +1,13 @@
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { printCommandHeader } from '../utils/printer';
 import { logger } from '../utils/logger';
+
+const STAGING_FILE = path.join(os.homedir(), '.aya', 'staging.json');
 
 export const commitCommand = new Command('commit')
   .description('Commit a good deed or intention')
@@ -10,6 +15,41 @@ export const commitCommand = new Command('commit')
   .action(async (options) => {
     printCommandHeader('commit');
     let message = options.message;
+
+    // Check for staged items first
+    let stagedItems: any[] = [];
+    if (fs.existsSync(STAGING_FILE)) {
+      try {
+        stagedItems = JSON.parse(fs.readFileSync(STAGING_FILE, 'utf-8'));
+      } catch (e) {}
+    }
+
+    // If no message provided and we have staged items, offer to commit them
+    if (!message && stagedItems.length > 0) {
+       const { confirm } = await inquirer.prompt([
+         {
+           type: 'confirm',
+           name: 'confirm',
+           message: `You have ${stagedItems.length} staged intentions. Commit them now?`,
+           default: true
+         }
+       ]);
+
+       if (confirm) {
+         console.log(chalk.gray('\nCommitting staged items...'));
+         for (const item of stagedItems) {
+            const commit = logger.logCommit(item.content || item);
+            console.log(chalk.green(`  ✓ ${item.content || item}`));
+         }
+         
+         // Clear staging area
+         fs.unlinkSync(STAGING_FILE);
+         
+         const totalDeeds = logger.getTotalDeeds();
+         console.log(chalk.white(`\n Total good deeds recorded: ${chalk.bold(totalDeeds)}`));
+         return;
+       }
+    }
 
     if (!message) {
       const answers = await inquirer.prompt([

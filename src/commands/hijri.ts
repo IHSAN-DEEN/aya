@@ -1,9 +1,8 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
-import axios from 'axios';
 import ora from 'ora';
-import { format } from 'date-fns';
 import { printCommandHeader } from '../utils/printer';
+import { getHijriDate } from '../utils/hijri';
 
 export const hijriCommand = new Command('hijri')
   .description('Date Converter (Gregorian <-> Hijri)')
@@ -13,12 +12,16 @@ export const hijriCommand = new Command('hijri')
     const spinner = ora('Converting date...').start();
     
     try {
-      const today = new Date();
-      const dateStr = options.date || format(today, 'dd-MM-yyyy');
+      let dateToConvert: Date;
+      if (options.date) {
+        // Parse DD-MM-YYYY
+        const [d, m, y] = options.date.split('-').map(Number);
+        dateToConvert = new Date(y, m - 1, d);
+      } else {
+        dateToConvert = new Date();
+      }
       
-      // Use Aladhan API for accurate conversion based on sighting adjustment if needed
-      const response = await axios.get(`http://api.aladhan.com/v1/gToH/${dateStr}`);
-      const data = response.data.data;
+      const data = await getHijriDate(dateToConvert);
       const hijri = data.hijri;
       const gregorian = data.gregorian;
 
@@ -38,6 +41,6 @@ export const hijriCommand = new Command('hijri')
       
     } catch (error) {
       spinner.fail('Conversion failed.');
-      console.log(chalk.red('Please ensure date format is DD-MM-YYYY'));
+      console.log(chalk.red('Please ensure date format is DD-MM-YYYY or check network.'));
     }
   });

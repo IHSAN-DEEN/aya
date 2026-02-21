@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import { logger } from './utils/logger';
+import { getConfig } from './utils/config';
+import { getPrayerTimes } from './utils/prayers';
 
 const PUBLIC_DIR = path.join(__dirname, '../public');
 
@@ -113,13 +115,48 @@ export const startServer = (port = 0, rootFile = 'index.html'): Promise<number> 
                             res.writeHead(400, { 'Content-Type': 'application/json' });
                             res.end(JSON.stringify({ error: 'Title required' }));
                         }
-            } catch (e) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Invalid JSON' }));
-            }
-        }
-    } else {
-        // Try to serve static files from public directory
+                    } catch (e) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+                    }
+                }
+            } else if (req.url === '/api/reflections') {
+                // API Endpoint: Serve reflections (Tadabbur)
+                try {
+                    const reflections = logger.getReflections();
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(reflections));
+                } catch (error) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to read reflections' }));
+                }
+            } else if (req.url === '/api/tasbih') {
+                 // API Endpoint: Serve Tasbih Count
+                 try {
+                     const count = logger.getTasbihCount();
+                     res.writeHead(200, { 'Content-Type': 'application/json' });
+                     res.end(JSON.stringify({ total: count }));
+                 } catch (error) {
+                     res.writeHead(500, { 'Content-Type': 'application/json' });
+                     res.end(JSON.stringify({ error: 'Failed to read tasbih' }));
+                 }
+            } else if (req.url === '/api/prayers') {
+                // API Endpoint: Serve Prayer Times
+                try {
+                    const config = getConfig();
+                    const { city, country } = config.location || { city: 'Mecca', country: 'Saudi Arabia' };
+                    const method = config.calculationMethod || 2;
+                    const madhab = config.madhab || 0;
+                    
+                    const data = await getPrayerTimes(city, country, method, madhab);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(data));
+                } catch (error) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to fetch prayer times' }));
+                }
+            } else {
+                // Try to serve static files from public directory
         const filePath = path.join(PUBLIC_DIR, req.url || '');
         // Prevent directory traversal
         if (!filePath.startsWith(PUBLIC_DIR)) {

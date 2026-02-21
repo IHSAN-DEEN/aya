@@ -698,6 +698,39 @@
                 </div>
             </div>
 
+            <!-- New Section: Reflections & Tasbih & Prayers -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="card" style="background: rgba(22, 27, 34, 0.8); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem;">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                        <h2 style="font-family: var(--font-cinematic); color: var(--accent-gold); font-size: 1.2rem;">Reflections (Tadabbur)</h2>
+                        <span class="count-badge" id="reflections-count">0</span>
+                    </div>
+                    <ul class="list" id="reflections-list" style="list-style: none;">
+                        <li style="color: var(--text-secondary); text-align: center; padding: 1rem;">Loading reflections...</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="background: rgba(22, 27, 34, 0.8); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem;">
+                    <div class="card-header" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                        <h2 style="font-family: var(--font-cinematic); color: var(--accent-green); font-size: 1.2rem;">Tasbih Count</h2>
+                    </div>
+                    <div style="display:flex; justify-content:center; align-items:center; height:150px; flex-direction:column;">
+                        <div id="tasbih-display" style="font-size: 4rem; font-weight: bold; color: var(--accent-green); font-family: var(--font-mono);">0</div>
+                        <div style="color: var(--text-secondary); margin-top: 0.5rem; font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Total Dhikr</div>
+                    </div>
+                </div>
+
+                <div class="card" style="background: rgba(22, 27, 34, 0.8); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem;">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                        <h2 style="font-family: var(--font-cinematic); color: var(--accent-gold); font-size: 1.2rem;">Prayer Times</h2>
+                        <span class="count-badge" id="prayer-city">Mecca</span>
+                    </div>
+                    <ul class="list" id="prayer-list" style="list-style: none;">
+                        <li style="color: var(--text-secondary); text-align: center; padding: 1rem;">Loading prayer times...</li>
+                    </ul>
+                </div>
+            </div>
+
             <h3 style="margin-top: 2rem; font-size: 1rem; margin-bottom: 0.5rem;">Contribution Activity</h3>
             <div class="contribution-graph">
                 <div class="graph-grid" id="contribution-grid">
@@ -883,6 +916,94 @@
             loadActions();
             loadProjects();
             loadWiki();
+            
+            // Load Reflections & Tasbih
+            loadReflections();
+            loadTasbih();
+            loadPrayers();
+        }
+        
+        async function loadReflections() {
+            const container = document.getElementById('reflections-list');
+            try {
+                const res = await fetch('/api/reflections');
+                if(!res.ok) throw new Error();
+                const reflections = await res.json();
+                
+                document.getElementById('reflections-count').textContent = reflections.length;
+                
+                if(reflections.length === 0) {
+                     container.innerHTML = `<li style="color: var(--text-secondary); text-align: center; padding: 1rem;">No reflections recorded yet. Use 'aya reflect'.</li>`;
+                     return;
+                }
+                
+                let html = '';
+                // Show last 3 reflections
+                reflections.slice(0, 3).forEach(r => {
+                     html += `
+                        <li style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; font-family: var(--font-cinematic);">${r.surah}</div>
+                            <div style="font-style: italic; color: var(--text-secondary); margin-bottom: 0.5rem;">"${r.verse}"</div>
+                            <div style="color: var(--text-primary); font-size: 0.9rem;">${r.reflection}</div>
+                        </li>
+                     `;
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = `<li style="color: var(--text-secondary); text-align: center; padding: 1rem;">Failed to load reflections.</li>`;
+            }
+        }
+        
+        async function loadTasbih() {
+            try {
+                const res = await fetch('/api/tasbih');
+                if(!res.ok) throw new Error();
+                const data = await res.json();
+                document.getElementById('tasbih-display').textContent = data.total;
+            } catch(e) {
+                document.getElementById('tasbih-display').textContent = '-';
+            }
+        }
+
+        async function loadPrayers() {
+            const list = document.getElementById('prayer-list');
+            const cityBadge = document.getElementById('prayer-city');
+            
+            try {
+                const res = await fetch('/api/prayers');
+                if(!res.ok) throw new Error();
+                const data = await res.json();
+                
+                if(data.city) cityBadge.textContent = data.city;
+                
+                const times = {
+                    'Fajr': data.timings.Fajr,
+                    'Sunrise': data.timings.Sunrise,
+                    'Dhuhr': data.timings.Dhuhr,
+                    'Asr': data.timings.Asr,
+                    'Maghrib': data.timings.Maghrib,
+                    'Isha': data.timings.Isha,
+                    'Midnight': data.timings.Midnight,
+                    'Last Third': data.timings.LastThird || data.timings.Lastthird
+                };
+                
+                let html = '';
+                for (const [name, time] of Object.entries(times)) {
+                    // Remove (CET) or timezone info if present, just keep HH:MM
+                    const cleanTime = time ? time.split(' ')[0] : '-';
+                    
+                    html += `
+                        <li style="display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border-color); color: var(--text-primary);">
+                            <span style="font-weight: 500;">${name}</span>
+                            <span style="font-family: var(--font-cinematic); letter-spacing: 1px;">${cleanTime}</span>
+                        </li>
+                    `;
+                }
+                list.innerHTML = html;
+            } catch(e) {
+                console.error(e);
+                list.innerHTML = `<li style="color: var(--text-secondary); text-align: center; padding: 1rem;">Failed to load prayers.</li>`;
+            }
         }
         
         async function loadIssues() {

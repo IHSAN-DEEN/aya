@@ -6,6 +6,7 @@ import { initCommand } from './commands/init';
 import { pullCommand } from './commands/pull';
 import { statusCommand } from './commands/status';
 import { commitCommand } from './commands/commit';
+import { addCommand } from './commands/add';
 import { blameCommand } from './commands/blame';
 import { pushCommand } from './commands/push';
 import { journalCommand } from './commands/journal';
@@ -42,6 +43,10 @@ import { fridayCommand } from './commands/friday';
 import { adabCommand } from './commands/adab';
 import { seekCommand } from './commands/seek';
 import { repoCommand } from './commands/repo';
+import { watchCommand } from './commands/watch';
+import { adhkarCommand } from './commands/adhkar';
+import { reciteCommand } from './commands/recite';
+import { configCommand } from './commands/config';
 
 const program = new Command();
 
@@ -71,7 +76,8 @@ const commands = [
   hijriCommand, zakatCommand, tasbihCommand, prayersCommand, namesCommand,
   duaCommand, fastCommand, sunnahCommand, sleepCommand, anatomyCommand,
   journeyCommand, natureCommand, wuduCommand, investCommand, sabrCommand,
-  shukrCommand, fridayCommand, adabCommand, seekCommand, repoCommand
+  shukrCommand, fridayCommand, adabCommand, seekCommand, repoCommand,
+  watchCommand, adhkarCommand, reciteCommand, configCommand
 ];
 
 commands.forEach(cmd => program.addCommand(cmd));

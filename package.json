@@ -1,7 +1,7 @@
 {
   "name": "@ihsandeen/aya",
   "version": "1.0.0",
-  "description": "A CLI tool for the mindful Muslim developer. Track your spiritual commits, manage your sins (issues), and push good deeds to the akhira.",
+  "description": "We optimize our code, but what about our hearts? Aya turns your terminal into a spiritual companion—tracking prayers, auditing intentions, and pushing deeds that last forever. Because the most important deployment is the one to the Akhira.",
   "main": "dist/index.js",
   "bin": {
     "aya": "./dist/index.js"
@@ -27,8 +27,12 @@
     "islam",
     "muslim",
     "cli",
+    "islamic-cli",
+    "muslim-developer",
     "productivity",
     "spiritual",
+    "tazkiyah",
+    "mindfulness",
     "developer",
     "quran",
     "sunnah",

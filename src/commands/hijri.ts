@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { printCommandHeader } from '../utils/printer';
 import { getHijriDate } from '../utils/hijri';
+import { getIslamicEvent } from '../data/events';
 
 export const hijriCommand = new Command('hijri')
   .description('Date Converter (Gregorian <-> Hijri)')
@@ -25,6 +26,13 @@ export const hijriCommand = new Command('hijri')
       const hijri = data.hijri;
       const gregorian = data.gregorian;
 
+      // Determine Event/Action
+      const dayNum = parseInt(hijri.day, 10);
+      const monthNum = hijri.month.number;
+      const weekdayEn = gregorian.weekday.en;
+      
+      const islamicEvent = getIslamicEvent(dayNum, monthNum, weekdayEn);
+
       spinner.stop();
 
       console.clear();
@@ -37,6 +45,17 @@ export const hijriCommand = new Command('hijri')
       
       console.log('');
       console.log(chalk.cyan(`Weekday:   ${hijri.weekday.en} (${hijri.weekday.ar})`));
+
+      if (islamicEvent) {
+        console.log('');
+        console.log(chalk.magenta('Event:     ') + chalk.white(islamicEvent.event));
+        console.log(chalk.green('Action:    ') + chalk.white(islamicEvent.action));
+      } else {
+         // Default generic action if no specific event
+         console.log('');
+         console.log(chalk.green('Action:    ') + chalk.gray('Make the most of this blessed day.'));
+      }
+
       console.log('');
       
     } catch (error) {

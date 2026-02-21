@@ -111,3 +111,76 @@ export const eventsList: HistoricalEvent[] = [
     revelation: 'This day I have perfected for you your religion and completed My favor upon you and have approved for you Islam as religion.'
   }
 ];
+
+export interface IslamicEvent {
+  event: string;
+  action: string;
+}
+
+export const getIslamicEvent = (day: number, month: number, weekday: string): IslamicEvent | null => {
+  // Priority 1: Specific Annual Days (Eid, Arafah, Ashura, Odd Nights)
+  switch (month) {
+    case 1: // Muharram
+      if (day === 9) return { event: 'Tasua (9th Muharram)', action: 'Sunnah to Fast (along with 10th).' };
+      if (day === 10) return { event: 'Ashura (10th Muharram)', action: 'Sunnah to Fast. Expiates sins of the previous year.' };
+      if (day === 11) return { event: '11th Muharram', action: 'Sunnah to Fast (if you missed 9th).' };
+      break;
+    case 8: // Shaban
+      if (day === 15) return { event: 'Mid-Shaban', action: 'Prepare your heart for Ramadan.' };
+      break;
+    case 9: // Ramadan
+      if (day >= 21 && day % 2 !== 0) return { event: 'Odd Night of Last 10 Days', action: 'Seek Laylatul Qadr. Pray Qiyam.' };
+      break;
+    case 10: // Shawwal
+      if (day === 1) return { event: 'Eid al-Fitr', action: 'Celebrate! Haram to fast. Pay Zakat al-Fitr before Salah.' };
+      break;
+    case 12: // Dhul Hijjah
+      if (day === 9) return { event: 'Day of Arafah', action: 'Fast! Expiates sins of previous and coming year. Make much Dua.' };
+      if (day === 10) return { event: 'Eid al-Adha', action: 'Sacrifice (Udhiya). Haram to fast. Takbeer.' };
+      if (day >= 11 && day <= 13) return { event: 'Days of Tashreeq', action: 'Eat, drink, and remember Allah. Haram to fast.' };
+      break;
+  }
+
+  // Priority 2: Weekly Events (Friday)
+  if (weekday.toLowerCase() === 'friday') {
+    return {
+      event: 'Jumu\'ah (Friday)',
+      action: 'Read Surah Al-Kahf, Send Salawat, Attend Jumu\'ah Prayer.'
+    };
+  }
+
+  // Priority 3: Monthly Events (White Days)
+  if ([13, 14, 15].includes(day)) {
+    if (month !== 9 && !(month === 12 && day === 13)) { // Not Ramadan, not 13th Dhul Hijjah
+       return {
+         event: 'The White Days (Ayyam al-Bid)',
+         action: 'Sunnah to Fast. Like fasting the whole month.'
+       };
+    }
+  }
+
+  // Priority 4: Weekly Fasting (Mon/Thu) - ONLY if not Eid/Tashreeq (Already handled in Priority 1)
+  if (weekday.toLowerCase() === 'monday' || weekday.toLowerCase() === 'thursday') {
+     if (month !== 9) { // Not Ramadan
+        return {
+          event: `It is ${weekday}`,
+          action: 'Sunnah to Fast today. The deeds are presented to Allah.'
+        };
+     }
+  }
+
+  // Priority 5: General Month Events
+  switch (month) {
+    case 9: // Ramadan
+      return { event: 'Month of Ramadan', action: 'Fasting, Quran, Taraweeh, Charity.' };
+    case 10: // Shawwal
+      if (day > 1 && day <= 30) return { event: 'Month of Shawwal', action: 'Fast 6 days to complete the reward of the year.' };
+      break;
+    case 12: // Dhul Hijjah
+      if (day >= 1 && day <= 8) return { event: 'First 10 Days of Dhul Hijjah', action: 'Increase Dhikr (Takbeer), Fasting, and Charity. Best days of the year.' };
+      break;
+  }
+
+  // Default
+  return null;
+};

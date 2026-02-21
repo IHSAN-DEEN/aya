@@ -1,4 +1,4 @@
-![aya preview](./public/og-image.png)
+![aya preview](https://raw.githubusercontent.com/IHSAN-DEEN/aya/main/public/og-image.png)
 
 # Assalamu Alaikum Wa Rahmatullah Wa Barakatuh
 
@@ -42,7 +42,7 @@ Every line of code you write can be an *ayah*—a sign of Allah's perfection. Ev
 
 ---
 
-![aya preview2](./public/believers-interface-preview.jpg)
+![aya preview2](https://raw.githubusercontent.com/IHSAN-DEEN/aya/main/public/believers-interface-preview.jpg)
 
 ## 🚀 Quick Start (Bismillah)
 
@@ -629,7 +629,7 @@ We didn't just build a CLI. We built it with **Ihsan** (Excellence). Because the
 
 ---
 
-[![Ummah Page Preview](./public/ummah-page-preview.png)](https://www.ihsandeen.com/)
+[![Ummah Page Preview](https://raw.githubusercontent.com/IHSAN-DEEN/aya/main/public/ummah-page-preview.png)](https://www.ihsandeen.com/)
 
 ## 💡 11 Ways We Want to Make It Better (Which You Can Too)
 

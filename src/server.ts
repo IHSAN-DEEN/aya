@@ -50,6 +50,8 @@ export const startServer = (port = 0, rootFile = 'index.html'): Promise<number> 
                 serveFile(res, path.join(PUBLIC_DIR, 'repo.html'));
             } else if (req.url === '/hero') {
                 serveFile(res, path.join(PUBLIC_DIR, 'hero.html'));
+            } else if (req.url === '/ummah') {
+                serveFile(res, path.join(PUBLIC_DIR, 'ummah.html'));
             } else if (req.url === '/api/commits') {
                 // API Endpoint: Serve commits log as JSON using the Logger utility
                 try {
@@ -125,6 +127,8 @@ if (require.main === module) {
         console.log(chalk.cyan.bold(`  http://localhost:${port}/repo`));
         console.log(chalk.white(`  Open the Hero Section:`));
         console.log(chalk.cyan.bold(`  http://localhost:${port}/hero`));
+        console.log(chalk.white(`  Open the Ummah Page:`));
+        console.log(chalk.cyan.bold(`  http://localhost:${port}/ummah`));
         console.log(chalk.gray(`\n  Press Ctrl+C to stop.`));
     });
 }

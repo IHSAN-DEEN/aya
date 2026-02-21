@@ -439,10 +439,21 @@ You see, the life of a believer is a constant cycle. It's not a straight line. W
     ```
 
 #### `aya zakat`
-**The Spiritual Reality:** Garbage Collection. You purify your wealth by removing the 2.5% that doesn't belong to you. If you keep it, it corrupts the whole heap. Cleanse your assets.
+**The Spiritual Reality:** Garbage Collection. You purify your wealth by removing the 2.5% that doesn't belong to you. If you keep it, it corrupts the whole heap. Cleanse your assets. **Now features Live Nisab calculation using real-time Gold & Silver prices.**
 *   **Usage:** `aya zakat`
 *   **Output:**
     ```text
+    Fetching live Gold & Silver prices...
+    ✔ Market Rates Loaded.
+
+    Current Gold Price:   $65.40 /g
+    Current Silver Price: $0.85 /g
+    Nisab (Gold Standard):    $5,721.19
+    Nisab (Silver Standard):  $520.51
+
+    ? Cash on hand / Bank accounts: 10000
+    ...
+    
     Assets:
     - Gold: $5000
     - Cash: $10000

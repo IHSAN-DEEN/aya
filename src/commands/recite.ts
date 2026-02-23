@@ -9,6 +9,7 @@ import fs from 'fs';
 import os from 'os';
 import { printCommandHeader } from '../utils/printer';
 import { getConfig } from '../utils/config';
+import { surahMap } from '../data/surahs';
 
 // Quran.com API
 // https://api.quran.com/api/v4/chapter_recitations/{reciter_id}/{chapter_id}
@@ -32,6 +33,34 @@ export const reciteCommand = new Command('recite')
     printCommandHeader('recite');
     
     let surah = surahArg;
+
+    // Resolve surah name if provided as string
+    if (surah && isNaN(parseInt(surah))) {
+        const surahName = surah.toLowerCase().trim();
+        // Exact match first
+        if (surahMap[surahName]) {
+            surah = surahMap[surahName].toString();
+        } else {
+            // Partial match (keys are lowercase)
+            const match = Object.keys(surahMap).find(key => key.includes(surahName));
+            if (match) {
+                surah = surahMap[match].toString();
+                // Capitalize first letter of match for display
+                const displayName = match.charAt(0).toUpperCase() + match.slice(1);
+                console.log(chalk.gray(`Found Surah: ${displayName} (#${surah})`));
+            } else {
+                console.log(chalk.red(`Surah "${surahArg}" not found.`));
+                console.log(chalk.yellow('Please enter a valid Surah number (1-114) or name.'));
+                return;
+            }
+        }
+    }
+    
+    // Ensure surah is a string if it was a number but passed as string arg
+    if (surah) {
+        surah = surah.toString();
+    }
+
     if (!surah) {
         const answer = await inquirer.prompt([
             {

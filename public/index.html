@@ -1284,5 +1284,128 @@
             }
         }
     </script>
+    <!-- Ihsan App Promo Popup -->
+    <style>
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .popup-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .popup-content {
+            background: var(--surface);
+            border: 1px solid var(--gold);
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+        }
+        .popup-overlay.active .popup-content {
+            transform: translateY(0);
+        }
+        .popup-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .popup-close:hover {
+            color: var(--gold);
+        }
+        .popup-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .popup-title {
+            font-family: var(--font-cinematic);
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        .popup-text {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .popup-cta {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 2rem;
+            font-family: var(--font-mono);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .popup-cta:hover {
+            background: var(--gold);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+
+    <div id="ihsan-popup" class="popup-overlay">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div class="popup-header">
+                <span class="popup-subtitle">From the creators of aya</span>
+                <h2 class="popup-title">Ihsan</h2>
+            </div>
+            <p class="popup-text">
+                You've been exploring for a while. If you seek a deeper, mobile companion for your spiritual journey, discover <strong>Ihsan</strong>.
+            </p>
+            <p class="popup-text" style="font-size: 0.9rem; opacity: 0.8;">
+                Available on Google Play and App Store.
+            </p>
+            <a href="https://www.ihsandeen.com/" target="_blank" class="popup-cta">
+                Visit Ihsan Deen <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Popup Logic
+        setTimeout(() => {
+            const popup = document.getElementById('ihsan-popup');
+            if (popup) {
+                popup.classList.add('active');
+            }
+        }, 120000); // 2 minutes (120000ms)
+
+        function closePopup() {
+            const popup = document.getElementById('ihsan-popup');
+            if (popup) {
+                popup.classList.remove('active');
+            }
+        }
+    </script>
 </body>
 </html>

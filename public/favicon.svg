@@ -1,10 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8a702a;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="128" fill="#050505"/>
-  <text x="50%" y="50%" dy=".35em" text-anchor="middle" font-family="sans-serif" font-weight="300" font-size="300" fill="url(#gold)">a</text>
+  
+  <!-- Background: Dark Terminal -->
+  <rect width="512" height="512" rx="128" fill="#050505" />
+  
+  <!-- Outer Geometric Frame (Octagon hints) -->
+  <path d="M256 64 L448 256 L256 448 L64 256 Z" fill="none" stroke="url(#goldGradient)" stroke-width="12" opacity="0.3"/>
+  
+  <!-- Inner Symbol: The 'Ayah' / Sign / Cursor -->
+  <!-- A stylized Kufic Alif/Lam or just a strong vertical line with a cursor -->
+  <path d="M180 160 L180 352" stroke="url(#goldGradient)" stroke-width="32" stroke-linecap="round"/>
+  <path d="M180 256 L300 256" stroke="url(#goldGradient)" stroke-width="32" stroke-linecap="round"/>
+  <path d="M300 160 L300 280" stroke="url(#goldGradient)" stroke-width="32" stroke-linecap="round"/>
+  
+  <!-- The Cursor (Underscore) -->
+  <rect x="330" y="320" width="40" height="12" fill="#d4af37">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Islamic Star Node at the connection -->
+  <rect x="246" y="246" width="20" height="20" transform="rotate(45 256 256)" fill="#d4af37" />
+
 </svg>
